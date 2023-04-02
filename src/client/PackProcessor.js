@@ -8,7 +8,7 @@ import I18 from './utils/I18';
 
 class PackProcessor {
 
-    static detectIdentical(rects) {
+    static detectIdentical(rects, didTrim) {
 
         let identical = [];
 
@@ -16,7 +16,7 @@ class PackProcessor {
             let rect1 = rects[i];
             for (let n = i + 1; n < rects.length; n++) {
                 let rect2 = rects[n];
-                if (PackProcessor.compareImages(rect1, rect2) && identical.indexOf(rect2) < 0) {
+                if (PackProcessor.compareImages(rect1, rect2, didTrim) && identical.indexOf(rect2) < 0) {
                     rect2.identical = rect1;
                     identical.push(rect2);
                 }
@@ -33,7 +33,12 @@ class PackProcessor {
         }
     }
 
-    static compareImages(rect1, rect2) {
+    static compareImages(rect1, rect2, didTrim) {
+        //return rect1.image._base64 == rect2.image._base64;
+        if(!didTrim) {
+            return rect1.image._base64 == rect2.image._base64;
+        }
+
         var i1 = rect1.trimmedImage;
         var i2 = rect2.trimmedImage;
 
@@ -103,8 +108,8 @@ class PackProcessor {
             maxWidth += img.width;
             maxHeight += img.height;
 
-            if (img.width > minWidth) minWidth = img.width + padding * 2 + extrude * 2;
-            if (img.height > minHeight) minHeight = img.height + padding * 2 + extrude * 2;
+            if (img.width > minWidth) minWidth = img.width + padding * 2;// + extrude * 2;
+            if (img.height > minHeight) minHeight = img.height + padding * 2;// + extrude * 2;
 
             rects.push({
                 frame: { x: 0, y: 0, w: img.width, h: img.height },
@@ -117,6 +122,9 @@ class PackProcessor {
                 image: img
             });
         }
+
+        minWidth += extrude * 2;
+        minHeight += extrude * 2;
 
         let width = options.width || 0;
         let height = options.height || 0;
@@ -149,7 +157,11 @@ class PackProcessor {
             Trimmer.trim(rects, alphaThreshold);
         }
 
+        // TODO: make extrude work like border padding
+
         for (let item of rects) {
+            //item.frame.x += extrude;
+            //item.frame.y += extrude;
             item.frame.w += padding * 2 + extrude * 2;
             item.frame.h += padding * 2 + extrude * 2;
         }
@@ -157,7 +169,7 @@ class PackProcessor {
         let identical = [];
 
         if (options.detectIdentical) {
-            let res = PackProcessor.detectIdentical(rects);
+            let res = PackProcessor.detectIdentical(rects, options.allowTrim);
 
             rects = res.rects;
             identical = res.identical;
@@ -241,6 +253,7 @@ class PackProcessor {
 
             let sheets = res.length;
             let efficiency = sourceArea / sheetArea;
+            // TODO: calculate ram usage instead
 
             if (sheets < optimalSheets || (sheets === optimalSheets && efficiency > optimalEfficiency)) {
                 optimalRes = res;

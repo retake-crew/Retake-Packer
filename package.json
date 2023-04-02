@@ -1,13 +1,13 @@
 {
   "name": "funkin-tex-packer",
   "displayName": "Funkin Texture Packer",
-  "version": "0.6.7",
+  "version": "0.0.1",
   "description": "Free online texture packer",
   "url": "http://free-tex-packer.com",
   "download": "http://free-tex-packer.com/download",
   "webApp": "http://free-tex-packer.com/app",
   "main": "src/index.js",
-  "tinifyUrl": "http://free-tex-packer.com/server/tinify.php",
+  "private": true,
   "localizations": [
     "en",
     "es",
@@ -47,13 +47,19 @@
     {
       "name": "Davide Matta aka DadeKuma",
       "homepage": "https://github.com/DadeKuma"
+    },
+    {
+      "name": "Ne_Eo",
+      "homepage": "https://github.com/NeeEoo"
     }
   ],
   "scripts": {
     "start": "webpack-dev-server --host 127.0.0.1 --port 4000",
     "start-electron": "webpack-dev-server --host 127.0.0.1 --port 4000 --platform electron",
+    "build": "webpack",
     "build-web": "webpack --build --platform web",
-    "build-web-watch": "webpack --watch --build --platform web",
+    "build-web-watch": "webpack --build --watch --platform web",
+    "serve": "webpack serve --open",
     "build-electron": "webpack --build --platform electron"
   },
   "repository": {
@@ -84,6 +90,7 @@
     "@babel/preset-env": "^7.6.3",
     "@babel/preset-react": "^7.7.4",
     "@jvitela/mustache-wax": "^1.0.1",
+    "@webpack-cli/serve": "^2.0.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.23.0",
@@ -104,9 +111,13 @@
     "plist": "^3.0.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14",
+    "webpack-dev-server": "^4.13.2",
     "xml2js": "^0.4.19"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "timers-browserify": "^2.0.12",
+    "webpack": "^5.77.0",
+    "webpack-cli": "^5.0.1"
   }
 }

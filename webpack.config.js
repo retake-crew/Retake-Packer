@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const argv = require('optimist').argv;
+//const argv = require('optimist').argv;
 
 let entry = [
     'babel-polyfill',
@@ -14,14 +14,18 @@ let devtool = 'eval-source-map';
 let output = 'static/js/index.js';
 let debug = true;
 
+var argv = {
+    build: true
+}
+
 let PLATFORM = argv.platform || 'web';
-let NODE_ENV = argv.build ? 'production' : 'development';
+let mode = 'development';//argv.build ? 'production' : 'development';
 
 let target = 'web';
 if (PLATFORM === 'electron') target = 'electron-renderer';
 
 plugins.push(new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
+    'process.env.NODE_ENV': JSON.stringify(mode),
     'PLATFORM': JSON.stringify(PLATFORM)
 }));
 
@@ -53,9 +57,12 @@ let config = {
         path: __dirname + "/dist",
         filename: output
     },
+    devServer: {
+        static: './dist',
+    },
     devtool: devtool,
     target: target,
-    mode: NODE_ENV,
+    mode: mode,
     module: {
         noParse: /.*[\/\\]bin[\/\\].+\.js/,
         rules: [
@@ -76,7 +83,7 @@ let config = {
         ]
     },
     optimization: {
-        minimize: NODE_ENV == "production",
+        //minimize: NODE_ENV == "production",
         usedExports: true,
     },
     plugins: plugins

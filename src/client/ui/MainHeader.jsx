@@ -12,9 +12,9 @@ class MainHeader extends React.Component {
         this.changeLanguage = this.changeLanguage.bind(this);
     }
 
-    showAbout() {
+    /* showAbout() {
         Observer.emit(GLOBAL_EVENT.SHOW_ABOUT);
-    }
+    } */
 
     changeLanguage(e) {
         Observer.emit(GLOBAL_EVENT.CHANGE_LANG, e.target.value);
@@ -32,9 +32,9 @@ class MainHeader extends React.Component {
                     {appInfo.displayName} {appInfo.version}
                 </div>
 
-                <div className="main-header-about" onClick={this.showAbout}>
+                {/* <div className="main-header-about" onClick={this.showAbout}>
                     ?
-                </div>
+                </div> */}
 
                 <div className="main-header-language border-color-gray">
                     {I18.f("LANGUAGE")}

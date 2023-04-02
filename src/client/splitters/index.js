@@ -1,7 +1,7 @@
 import Grid from './Grid';
 import JsonHash from './JsonHash';
 import JsonArray from './JsonArray';
-import XML from './XML';
+//import XML from './XML';
 import UIKit from './UIKit';
 import Spine from './Spine';
 
@@ -9,7 +9,7 @@ const list = [
     Grid,
     JsonHash,
     JsonArray,
-    XML,
+    //XML,
     UIKit,
     Spine
 ];

@@ -7,7 +7,7 @@ import PackResults from './PackResults.jsx';
 import MessageBox from './MessageBox.jsx';
 import ProcessingShader from './ProcessingShader.jsx';
 import OldBrowserBlocker from './OldBrowserBlocker.jsx';
-import About from './About.jsx';
+//import About from './About.jsx';
 import Updater from './Updater.jsx';
 import EditCustomExporter from './EditCustomExporter.jsx';
 import SheetSplitter from './SheetSplitter.jsx';
@@ -21,7 +21,7 @@ class MainLayout extends React.Component {
         this.state = {
             messageBox: false,
             shader: false,
-            about: false,
+            //about: false,
             editCustomExporter: false,
             updater: false,
             sheetSplitter: false
@@ -32,8 +32,8 @@ class MainLayout extends React.Component {
         Observer.on(GLOBAL_EVENT.SHOW_MESSAGE, this.showMessage, this);
         Observer.on(GLOBAL_EVENT.SHOW_SHADER, this.showShader, this);
         Observer.on(GLOBAL_EVENT.HIDE_SHADER, this.hideShader, this);
-        Observer.on(GLOBAL_EVENT.SHOW_ABOUT, this.showAbout, this);
-        Observer.on(GLOBAL_EVENT.HIDE_ABOUT, this.hideAbout, this);
+        //Observer.on(GLOBAL_EVENT.SHOW_ABOUT, this.showAbout, this);
+        //Observer.on(GLOBAL_EVENT.HIDE_ABOUT, this.hideAbout, this);
         Observer.on(GLOBAL_EVENT.SHOW_EDIT_CUSTOM_EXPORTER, this.showEditCustomExporter, this);
         Observer.on(GLOBAL_EVENT.HIDE_EDIT_CUSTOM_EXPORTER, this.hideEditCustomExporter, this);
         Observer.on(GLOBAL_EVENT.UPDATE_AVAILABLE, this.onUpdateAvailable, this);
@@ -69,13 +69,13 @@ class MainLayout extends React.Component {
         this.setState({shader: false});
     }
 
-    showAbout() {
+    /*showAbout() {
         this.setState({about: true});
     }
 
     hideAbout() {
         this.setState({about: false});
-    }
+    }*/
 
     showEditCustomExporter() {
         this.setState({editCustomExporter: true});
@@ -95,7 +95,7 @@ class MainLayout extends React.Component {
 
     render() {
         let shader = this.state.shader ? (<ProcessingShader/>) : null;
-        let about = this.state.about ? (<About/>) : null;
+        //let about = this.state.about ? (<About/>) : null;
         let editCustomExporter = this.state.editCustomExporter ? (<EditCustomExporter/>) : null;
         let updater = this.state.updater ? (<Updater data={this.state.updater}/>) : null;
         let sheetSplitter = this.state.sheetSplitter ? (<SheetSplitter/>) : null;
@@ -110,7 +110,7 @@ class MainLayout extends React.Component {
                     <PackProperties/>
                     <PackResults/>
                     <OldBrowserBlocker/>
-                    {about}
+                    {/*about*/}
                     {editCustomExporter}
                     {sheetSplitter}
                     {updater}

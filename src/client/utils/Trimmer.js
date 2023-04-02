@@ -106,7 +106,12 @@ class Trimmer {
                 item.spriteSourceSize.h = 1;
             }
 
-            item.trimmedImage = data;
+            item.trimmedImage = ctx.getImageData(
+                item.spriteSourceSize.x,
+                item.spriteSourceSize.y,
+                item.spriteSourceSize.w,
+                item.spriteSourceSize.h
+            ).data;
 
             if(item.trimmed) {
                 item.frame.w = item.spriteSourceSize.w;
