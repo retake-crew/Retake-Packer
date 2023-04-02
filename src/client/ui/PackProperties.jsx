@@ -33,24 +33,26 @@ class PackProperties extends React.Component {
         this.onExporterPropChanged = this.onExporterPropChanged.bind(this);
         this.forceUpdate = this.forceUpdate.bind(this);
         this.selectSavePath = this.selectSavePath.bind(this);
-        
+
         this.packOptions = this.loadOptions();
         this.loadCustomExporter();
-        
+
+        window.applyOptionsDefaults = this.applyOptionsDefaults;
+
         this.state = {packer: this.packOptions.packer};
     }
-    
+
     static get i() {
         return INSTANCE;
     }
-    
+
     setOptions(data) {
         this.packOptions = this.applyOptionsDefaults(data);
         this.saveOptions();
         this.refreshPackOptions();
         this.emitChanges();
     }
-    
+
     loadCustomExporter() {
         let data = Storage.load(STORAGE_CUSTOM_EXPORTER_KEY);
         if(data) {
@@ -61,39 +63,39 @@ class PackProperties extends React.Component {
             exporter.content = data.content;
         }
     }
-    
+
     loadOptions() {
         return this.applyOptionsDefaults(Storage.load(STORAGE_OPTIONS_KEY));
     }
-    
+
     applyOptionsDefaults(data) {
         if(!data) data = {};
-        
+
         data.textureName = data.textureName || "texture";
         data.textureFormat = data.textureFormat || "png";
-        data.removeFileExtension = data.removeFileExtension === undefined ? false : data.removeFileExtension;
+        data.removeFileExtension = data.removeFileExtension === undefined ? true : data.removeFileExtension;
         data.prependFolderName = data.prependFolderName === undefined ? true : data.prependFolderName;
         data.scale = data.scale || 1;
         data.filter = getFilterByType(data.filter) ? data.filter : filters[0].type;
         data.exporter = getExporterByType(data.exporter) ? data.exporter : exporters[0].type;
         data.base64Export = data.base64Export === undefined ? false : data.base64Export;
-        data.tinify = data.tinify === undefined ? false : data.tinify;
-        data.tinifyKey = data.tinifyKey === undefined ? "" : data.tinifyKey;
+        //data.tinify = data.tinify === undefined ? false : data.tinify;
+        //data.tinifyKey = data.tinifyKey === undefined ? "" : data.tinifyKey;
         data.fileName = data.fileName || "pack-result";
         data.savePath = data.savePath || "";
-        data.width = data.width === undefined ? 2048 : data.width;
-        data.height = data.height === undefined ? 2048 : data.height;
+        data.width = data.width === undefined ? 8192 : data.width;
+        data.height = data.height === undefined ? 8192 : data.height;
         data.fixedSize = data.fixedSize === undefined ? false : data.fixedSize;
         data.powerOfTwo = data.powerOfTwo === undefined ? false : data.powerOfTwo;
-        data.padding = data.padding === undefined ? 0 : data.padding;
+        data.padding = data.padding === undefined ? 3 : data.padding;
         data.extrude = data.extrude === undefined ? 0 : data.extrude;
-        data.allowRotation = data.allowRotation === undefined ? true : data.allowRotation;
+        data.allowRotation = data.allowRotation === undefined ? false : data.allowRotation;
         data.allowTrim = data.allowTrim === undefined ? true : data.allowTrim;
         data.trimMode = data.trimMode === undefined ? "trim" : data.trimMode;
         data.alphaThreshold = data.alphaThreshold || 0;
         data.detectIdentical = data.detectIdentical === undefined ? true : data.detectIdentical;
-        data.packer = getPackerByType(data.packer) ? data.packer : packers[0].type;
-        
+        data.packer = getPackerByType(data.packer) ? data.packer : packers[2].type;
+
         let methodValid = false;
         let packer = getPackerByType(data.packer);
         let packerMethods = Object.keys(packer.methods);
@@ -103,12 +105,12 @@ class PackProperties extends React.Component {
                 break;
             }
         }
-        
+
         if(!methodValid) data.packerMethod = packerMethods[0];
-        
+
         return data;
     }
-    
+
     saveOptions(force=false) {
         if(PLATFORM === "web" || force) {
             Storage.save(STORAGE_OPTIONS_KEY, this.packOptions);
@@ -119,17 +121,17 @@ class PackProperties extends React.Component {
         this.updateEditCustomTemplateButton();
         this.emitChanges();
     }
-    
+
     updatePackOptions() {
         let data = {};
-        
+
         data.textureName = ReactDOM.findDOMNode(this.refs.textureName).value;
         data.textureFormat = ReactDOM.findDOMNode(this.refs.textureFormat).value;
         data.removeFileExtension = ReactDOM.findDOMNode(this.refs.removeFileExtension).checked;
         data.prependFolderName = ReactDOM.findDOMNode(this.refs.prependFolderName).checked;
         data.base64Export = ReactDOM.findDOMNode(this.refs.base64Export).checked;
-        data.tinify = ReactDOM.findDOMNode(this.refs.tinify).checked;
-        data.tinifyKey = ReactDOM.findDOMNode(this.refs.tinifyKey).value;
+        //data.tinify = ReactDOM.findDOMNode(this.refs.tinify).checked;
+        //data.tinifyKey = ReactDOM.findDOMNode(this.refs.tinifyKey).value;
         data.scale = Number(ReactDOM.findDOMNode(this.refs.scale).value);
         data.filter = ReactDOM.findDOMNode(this.refs.filter).value;
         data.exporter = ReactDOM.findDOMNode(this.refs.exporter).value;
@@ -151,15 +153,15 @@ class PackProperties extends React.Component {
 
         this.packOptions = this.applyOptionsDefaults(data);
     }
-    
+
     refreshPackOptions() {
         ReactDOM.findDOMNode(this.refs.textureName).value = this.packOptions.textureName;
         ReactDOM.findDOMNode(this.refs.textureFormat).value = this.packOptions.textureFormat;
         ReactDOM.findDOMNode(this.refs.removeFileExtension).checked = this.packOptions.removeFileExtension;
         ReactDOM.findDOMNode(this.refs.prependFolderName).checked = this.packOptions.prependFolderName;
         ReactDOM.findDOMNode(this.refs.base64Export).checked = this.packOptions.base64Export;
-        ReactDOM.findDOMNode(this.refs.tinify).checked = this.packOptions.tinify;
-        ReactDOM.findDOMNode(this.refs.tinifyKey).value = this.packOptions.tinifyKey;
+        //ReactDOM.findDOMNode(this.refs.tinify).checked = this.packOptions.tinify;
+        //ReactDOM.findDOMNode(this.refs.tinifyKey).value = this.packOptions.tinifyKey;
         ReactDOM.findDOMNode(this.refs.scale).value = Number(this.packOptions.scale);
         ReactDOM.findDOMNode(this.refs.filter).value = this.packOptions.filter;
         ReactDOM.findDOMNode(this.refs.exporter).value = this.packOptions.exporter;
@@ -195,11 +197,11 @@ class PackProperties extends React.Component {
         this.setState({packer: e.target.value});
         this.onPropChanged();
     }
-    
+
     onPropChanged() {
         this.updatePackOptions();
         this.saveOptions();
-        
+
         this.emitChanges();
     }
 
@@ -207,28 +209,28 @@ class PackProperties extends React.Component {
         let exporter = getExporterByType(ReactDOM.findDOMNode(this.refs.exporter).value);
         let allowTrimInput = ReactDOM.findDOMNode(this.refs.allowTrim);
         let allowRotationInput = ReactDOM.findDOMNode(this.refs.allowRotation);
-        
-        let doRefresh = (allowTrimInput.checked !== exporter.allowTrim) || 
+
+        let doRefresh = (allowTrimInput.checked !== exporter.allowTrim) ||
                         (allowRotationInput.checked !== exporter.allowRotation);
-        
+
         allowTrimInput.checked = exporter.allowTrim;
         allowRotationInput.checked = exporter.allowRotation;
-        
+
         this.updateEditCustomTemplateButton();
-        
+
         this.onExporterPropChanged();
         if(doRefresh) this.onPropChanged();
     }
-    
+
     updateEditCustomTemplateButton() {
         let exporter = getExporterByType(ReactDOM.findDOMNode(this.refs.exporter).value);
         ReactDOM.findDOMNode(this.refs.editCustomFormat).style.visibility = exporter.type === "custom" ? "visible" : "hidden";
     }
-    
+
     onExporterPropChanged() {
         this.updatePackOptions();
         this.saveOptions();
-        
+
         Observer.emit(GLOBAL_EVENT.PACK_EXPORTER_CHANGED, this.getPackOptions());
     }
 
@@ -238,7 +240,7 @@ class PackProperties extends React.Component {
             if (key === 13) this.onPropChanged();
         }
     }
-    
+
     startExport() {
         Observer.emit(GLOBAL_EVENT.START_EXPORT);
     }
@@ -254,7 +256,7 @@ class PackProperties extends React.Component {
             this.onExporterPropChanged();
         }
     }
-    
+
     render() {
 
         let exporter = getExporterByType(this.packOptions.exporter);
@@ -262,7 +264,7 @@ class PackProperties extends React.Component {
         let exporterRotationDisabled = exporter.allowRotation ? "" : "disabled";
         let allowTrim = this.packOptions.allowTrim && exporter.allowTrim;
         let exporterTrimDisabled = exporter.allowTrim ? "" : "disabled";
-        
+
         return (
             <div className="props-list back-white">
                 <div className="pack-properties-containter">
@@ -298,16 +300,16 @@ class PackProperties extends React.Component {
                                 <td><input ref="base64Export" className="border-color-gray" type="checkbox" defaultChecked={this.packOptions.base64Export ? "checked" : ""} onChange={this.onExporterPropChanged} /></td>
                                 <td></td>
                             </tr>
-                            <tr title={I18.f("TINIFY_TITLE")}>
+                            {/* <tr title={I18.f("TINIFY_TITLE")}>
                                 <td>{I18.f("TINIFY")}</td>
                                 <td><input ref="tinify" className="border-color-gray" type="checkbox" defaultChecked={this.packOptions.tinify ? "checked" : ""} onChange={this.onExporterPropChanged} /></td>
                                 <td></td>
-                            </tr>
-                            <tr title={I18.f("TINIFY_KEY_TITLE")}>
+                            </tr> */}
+                            {/* <tr title={I18.f("TINIFY_KEY_TITLE")}>
                                 <td>{I18.f("TINIFY_KEY")}</td>
                                 <td><input ref="tinifyKey" type="text" className="border-color-gray" defaultValue={this.packOptions.tinifyKey} onBlur={this.onExporterPropChanged} /></td>
                                 <td></td>
-                            </tr>
+                            </tr> */}
                             <tr title={I18.f("SCALE_TITLE")}>
                                 <td>{I18.f("SCALE")}</td>
                                 <td><input ref="scale" type="number" min="0" className="border-color-gray" defaultValue={this.packOptions.scale} onBlur={this.onPropChanged}/></td>
@@ -354,7 +356,7 @@ class PackProperties extends React.Component {
                                     <div className="btn back-800 border-color-gray color-white" onClick={this.startExport}>{I18.f("EXPORT")}</div>
                                 </td>
                             </tr>
-                            
+
                             <tr title={I18.f("WIDTH_TITLE")}>
                                 <td>{I18.f("WIDTH")}</td>
                                 <td><input ref="width" type="number" min="0" className="border-color-gray" defaultValue={this.packOptions.width} onBlur={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
@@ -448,7 +450,7 @@ class PackerMethods extends React.Component {
         }
 
         let items = [];
-        
+
         let methods = Object.keys(packer.methods);
         for(let item of methods) {
             items.push(<option value={item} key={"packer-method-" + item }>{item}</option>);

@@ -54,7 +54,7 @@ function injectCss(path) {
 
 function setLocale(locale) {
     if(!layout) return;
-    
+
     I18.init(locale);
     I18.load(() => {
         Storage.save(STORAGE_LANGUAGE_KEY, I18.currentLocale);

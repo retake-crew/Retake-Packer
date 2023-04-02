@@ -16,7 +16,7 @@ class PackProcessor {
             let rect1 = rects[i];
             for (let n = i + 1; n < rects.length; n++) {
                 let rect2 = rects[n];
-                if (rect1.image._base64 === rect2.image._base64 && identical.indexOf(rect2) < 0) {
+                if (PackProcessor.compareImages(rect1, rect2) && identical.indexOf(rect2) < 0) {
                     rect2.identical = rect1;
                     identical.push(rect2);
                 }
@@ -31,6 +31,20 @@ class PackProcessor {
             rects: rects,
             identical: identical
         }
+    }
+
+    static compareImages(rect1, rect2) {
+        var i1 = rect1.trimmedImage;
+        var i2 = rect2.trimmedImage;
+
+        if(i1.length != i2.length) return false;
+
+        var length = i1.length;
+
+        while(length--) {
+            if(i1[length] != i2[length]) return false;
+        }
+        return true;
     }
 
     static applyIdentical(rects, identical) {
@@ -67,7 +81,7 @@ class PackProcessor {
     }
 
     static pack(images = {}, options = {}, onComplete = null, onError = null) {
-
+        //debugger;
         let rects = [];
 
         let padding = options.padding || 0;

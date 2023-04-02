@@ -28,7 +28,7 @@ class MainLayout extends React.Component {
         };
 
         this.closeMessage = this.closeMessage.bind(this);
-        
+
         Observer.on(GLOBAL_EVENT.SHOW_MESSAGE, this.showMessage, this);
         Observer.on(GLOBAL_EVENT.SHOW_SHADER, this.showShader, this);
         Observer.on(GLOBAL_EVENT.HIDE_SHADER, this.hideShader, this);
@@ -52,11 +52,11 @@ class MainLayout extends React.Component {
 
     showMessage(content, buttons=null) {
         if(this.state.messageBox) return;
-        
+
         let box = (<MessageBox content={content} buttons={buttons} closeCallback={this.closeMessage} />);
         this.setState({messageBox: box});
     }
-    
+
     closeMessage() {
         this.setState({messageBox: null});
     }
@@ -86,25 +86,25 @@ class MainLayout extends React.Component {
     }
 
     showSheetSplitter() {
-        this.setState({sheetSplitter: true});    
+        this.setState({sheetSplitter: true});
     }
 
     hideSheetSplitter() {
         this.setState({sheetSplitter: false});
     }
-    
+
     render() {
         let shader = this.state.shader ? (<ProcessingShader/>) : null;
         let about = this.state.about ? (<About/>) : null;
         let editCustomExporter = this.state.editCustomExporter ? (<EditCustomExporter/>) : null;
         let updater = this.state.updater ? (<Updater data={this.state.updater}/>) : null;
         let sheetSplitter = this.state.sheetSplitter ? (<SheetSplitter/>) : null;
-        
+
         return (
-            
+
             <div className="main-wrapper">
                 <MainHeader/>
-                
+
                 <div className="main-layout border-color-gray">
                     <ImagesList/>
                     <PackProperties/>

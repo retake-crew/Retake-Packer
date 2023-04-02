@@ -12,22 +12,22 @@ const STORAGE_CUSTOM_EXPORTER_KEY = "custom-exporter";
 class EditCustomExporter extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.save = this.save.bind(this);
     }
 
     close() {
         Observer.emit(GLOBAL_EVENT.HIDE_EDIT_CUSTOM_EXPORTER);
     }
-    
+
     save() {
         let exporter = getExporterByType("custom");
-        
+
         let content = ReactDOM.findDOMNode(this.refs.content).value;
         let allowTrim = ReactDOM.findDOMNode(this.refs.allowTrim).checked;
         let allowRotation = ReactDOM.findDOMNode(this.refs.allowRotation).checked;
         let fileExt = ReactDOM.findDOMNode(this.refs.fileExt).value;
-        
+
         try {
             mustache.parse(content);
 
@@ -35,9 +35,9 @@ class EditCustomExporter extends React.Component {
             exporter.allowTrim = allowTrim;
             exporter.allowRotation = allowRotation;
             exporter.fileExt = fileExt;
-            
+
             Storage.save(STORAGE_CUSTOM_EXPORTER_KEY, exporter);
-            
+
             Observer.emit(GLOBAL_EVENT.HIDE_EDIT_CUSTOM_EXPORTER);
         }
         catch(e) {
@@ -47,7 +47,7 @@ class EditCustomExporter extends React.Component {
 
     render() {
         let exporter = getExporterByType("custom");
-        
+
         return (
             <div className="edit-custom-exporter-shader">
                 <div className="edit-custom-exporter-content">
@@ -55,11 +55,11 @@ class EditCustomExporter extends React.Component {
                     <div>
                         <a href={appInfo.homepage} className="color-800" target="_blank">{I18.f("DOCUMENTATION")}</a>
                     </div>
-                    
+
                     <div>
                         <textarea ref="content" className="edit-custom-exporter-data" defaultValue={exporter.content}></textarea>
                     </div>
-                    
+
                     <div>
                         <b>{I18.f("ALLOW_TRIM")}</b>
                         <input ref="allowTrim" className="border-color-gray" type="checkbox" defaultChecked={exporter.allowTrim ? "checked" : ""}/>
@@ -70,13 +70,13 @@ class EditCustomExporter extends React.Component {
                         <b>{I18.f("FILE_EXT")}</b>
                         <input ref="fileExt" className="border-color-gray" type="text" defaultValue={exporter.fileExt}/>
                     </div>
-                    
+
                     <div className="edit-custom-exporter-controls">
                         <div className="btn back-800 border-color-gray color-white" onClick={this.save}>{I18.f("SAVE")}</div>
                         &nbsp;&nbsp;&nbsp;
                         <div className="btn back-black border-color-gray color-white" onClick={this.close}>{I18.f("CANCEL")}</div>
                     </div>
-                    
+
                 </div>
             </div>
         );

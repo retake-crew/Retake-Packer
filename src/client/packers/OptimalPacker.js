@@ -12,7 +12,7 @@ class OptimalPacker extends Packer {
     pack(data, method) {
         throw new Error('OptimalPacker is a dummy and cannot be used directly');
     }
-    
+
     static get type() {
         return "OptimalPacker";
     }

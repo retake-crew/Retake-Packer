@@ -8,11 +8,11 @@ class Tinifyer {
             if(packOptions.tinify) {
                 let uid = Date.now() + "_" + Math.random();
                 let data = {imageData: imageData, key: packOptions.tinifyKey, uid: uid};
-                
+
                 let handler = (e, data) => {
                     if(data.uid === uid) {
                         ipcRenderer.removeListener('tinify-complete', handler);
-                        
+
                         if(data.success) {
                             resolve(data.data);
                         }
@@ -22,7 +22,7 @@ class Tinifyer {
                         }
                     }
                 };
-                
+
                 ipcRenderer.on('tinify-complete', handler);
                 ipcRenderer.send('tinify', data);
             }

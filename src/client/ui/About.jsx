@@ -14,7 +14,7 @@ class About extends React.Component {
     close() {
         Observer.emit(GLOBAL_EVENT.HIDE_ABOUT);
     }
-	
+
 	renderDownload() {
 		return (
 			<tr>
@@ -23,7 +23,7 @@ class About extends React.Component {
 			</tr>
 		)
 	}
-	
+
 	renderWebVersion() {
 		return (
 			<tr>
@@ -37,14 +37,14 @@ class About extends React.Component {
         return (
             <div className="about-shader">
                 <div className="about-content">
-                    
+
                     <div className="about-logo"></div>
-                    
+
                     <div className="about-app-info">
                         <span className="about-app-name">{appInfo.displayName}</span>
                         <span className="about-app-version">{appInfo.version}</span>
                     </div>
-                    
+
                     <div>
                         <table>
                             <tbody>
@@ -52,19 +52,19 @@ class About extends React.Component {
                                     <td><b>{I18.f("ABOUT_HOMEPAGE")}</b></td>
 									<td><a href={appInfo.url} target="_blank" className="color-800">{appInfo.url}</a></td>
 								</tr>
-                                
+
                                 <tr>
                                     <td><b>{I18.f("ABOUT_SOURCES")}</b></td>
                                     <td><a href={appInfo.homepage} target="_blank" className="color-800">{appInfo.homepage}</a></td>
                                 </tr>
-								
+
 								<tr>
                                     <td><b>{I18.f("ABOUT_BUGS")}</b></td>
 									<td><a href={appInfo.bugs.url} target="_blank" className="color-800">{appInfo.bugs.url}</a></td>
 								</tr>
-                                
+
 								{PLATFORM === "web" ? this.renderDownload() : this.renderWebVersion()}
-								
+
                                 <tr>
                                     <td><b>{I18.f("ABOUT_LIBS")}</b></td>
                                     <td>
@@ -88,7 +88,7 @@ class About extends React.Component {
                                         </div>
                                     </td>
                                 </tr>
-                            
+
                                 <tr>
                                     <td><b>{I18.f("ABOUT_CONTRIBUTORS")}</b></td>
                                     <td className={"contributors-list"}>
@@ -108,7 +108,7 @@ class About extends React.Component {
                             <div className="btn back-600 border-color-gray color-white" onClick={this.close}>{I18.f("OK")}</div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         );

@@ -21,7 +21,7 @@ class Filter {
     applyImageData(imageData) {
         return imageData;
     }
-    
+
     static get type() {
         return "none";
     }

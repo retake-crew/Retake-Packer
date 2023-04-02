@@ -36,7 +36,7 @@ function getSplitterByData(data, cb) {
             });
         }
     }
-    
+
     return getDefaultSplitter();
 }
 

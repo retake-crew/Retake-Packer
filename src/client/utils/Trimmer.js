@@ -1,3 +1,6 @@
+let cns = document.createElement("canvas");
+let ctx = cns.getContext("2d", {willReadFrequently: true});
+
 class Trimmer {
 
     constructor() {
@@ -66,9 +69,6 @@ class Trimmer {
 
     static trim(rects, threshold=0) {
 
-        let cns = document.createElement("canvas");
-        let ctx = cns.getContext("2d");
-
         for(let item of rects) {
 
             let img = item.image;
@@ -85,7 +85,7 @@ class Trimmer {
             let spaces = {left: 0, right: 0, top: 0, bottom: 0};
 
             spaces.left = this.getLeftSpace(data, img.width, img.height, threshold);
-            if(spaces.left !== img.width) {
+            if(spaces.left !== img.width) { // was able to trim it
                 spaces.right = this.getRightSpace(data, img.width, img.height, threshold);
                 spaces.top = this.getTopSpace(data, img.width, img.height, threshold);
                 spaces.bottom = this.getBottomSpace(data, img.width, img.height, threshold);
@@ -98,13 +98,15 @@ class Trimmer {
                     item.spriteSourceSize.h = img.height-spaces.top-spaces.bottom;
                 }
             }
-            else {
+            else { // wasnt able to trim it
                 item.trimmed = true;
                 item.spriteSourceSize.x = 0;
                 item.spriteSourceSize.y = 0;
                 item.spriteSourceSize.w = 1;
                 item.spriteSourceSize.h = 1;
             }
+
+            item.trimmedImage = data;
 
             if(item.trimmed) {
                 item.frame.w = item.spriteSourceSize.w;

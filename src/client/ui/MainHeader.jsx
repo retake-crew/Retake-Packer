@@ -11,7 +11,7 @@ class MainHeader extends React.Component {
 
         this.changeLanguage = this.changeLanguage.bind(this);
     }
-    
+
     showAbout() {
         Observer.emit(GLOBAL_EVENT.SHOW_ABOUT);
     }
@@ -23,7 +23,7 @@ class MainHeader extends React.Component {
     showSplitter() {
         Observer.emit(GLOBAL_EVENT.SHOW_SHEET_SPLITTER);
     }
-    
+
     render() {
         return (
             <div className="main-header back-900 color-white">

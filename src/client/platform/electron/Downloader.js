@@ -7,15 +7,15 @@ import I18 from '../../utils/I18';
 class Downloader {
 
     static run(files, fileName, savePath) {
-        
+
         let dir = savePath;
-        
+
         if(!dir) {
             dir = dialog.showOpenDialog({
                 properties: ['openDirectory']
             });
         }
-        
+
         if(dir) {
             dir = String(dir);
 
@@ -40,7 +40,7 @@ class Downloader {
                     fs.writeFileSync(savePath, content);
                 }
             };
-            
+
             let exists = false;
             for(let file of files) {
                 if(fs.existsSync(path.normalize(dir + "/" + file.name))) {
@@ -48,7 +48,7 @@ class Downloader {
                     break;
                 }
             }
-            
+
             if(exists) {
                 dialog.showMessageBox({buttons: ["Yes","No","Cancel"], message: I18.f('REPLACE_FILES_PROMPT')}, (res) => {
                     if(res === 0) complete();

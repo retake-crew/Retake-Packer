@@ -28,7 +28,7 @@ function createXMLHTTPRequest(url, callback=null, errorCallback=null, dataType="
                     if (!data && xmlhttp.responseText) {
                         data = xmlhttp.responseText;
                     }
-                    
+
                     if(callback) callback(data);
                 }
                 else {

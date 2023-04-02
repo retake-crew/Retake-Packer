@@ -18,7 +18,7 @@ class Mask extends Filter {
                 imageData.data[i+2] = 255;
             }
         }
-        
+
         return imageData;
     }
 

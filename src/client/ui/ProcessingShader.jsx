@@ -6,7 +6,7 @@ import I18 from '../utils/I18';
 class ProcessingShader extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.showTimer = null;
     }
 

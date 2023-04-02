@@ -84,9 +84,9 @@ function prepareData(data, options) {
         let frame = {x: item.frame.x, y: item.frame.y, w: item.frame.w, h: item.frame.h, hw: item.frame.w/2, hh: item.frame.h/2};
         let spriteSourceSize = {x: item.spriteSourceSize.x, y: item.spriteSourceSize.y, w: item.spriteSourceSize.w, h: item.spriteSourceSize.h};
         let sourceSize = {w: item.sourceSize.w, h: item.sourceSize.h};
-        
+
         let trimmed = item.trimmed;
-        
+
         if(item.trimmed && options.trimMode === 'crop') {
             trimmed = false;
             spriteSourceSize.x = 0;
@@ -94,7 +94,7 @@ function prepareData(data, options) {
             sourceSize.w = spriteSourceSize.w;
             sourceSize.h = spriteSourceSize.h;
         }
-        
+
         if(opt.scale !== 1) {
             frame.x *= opt.scale;
             frame.y *= opt.scale;
@@ -139,12 +139,12 @@ function startExporter(exporter, data, options) {
             config: config,
             appInfo: appInfo
         };
-        
+
         if(exporter.content) {
             finishExporter(exporter, renderOptions, resolve, reject);
             return;
         }
-        
+
         GET("static/exporters/" + exporter.template, null, (template) => {
             exporter.content = template;
             finishExporter(exporter, renderOptions, resolve, reject);

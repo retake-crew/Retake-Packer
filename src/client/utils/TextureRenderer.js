@@ -1,14 +1,14 @@
 class TextureRenderer {
-    
+
     constructor(data, options={}) {
         this.buffer = document.createElement("canvas");
 
         this.width = 0;
         this.height = 0;
-        
+
         this.render(data, options);
     }
-    
+
     static getSize(data, options={}) {
         let width = options.width || 0;
         let height = options.height || 0;
@@ -56,10 +56,10 @@ class TextureRenderer {
             width = pw;
             height = ph;
         }
-        
+
         return {width, height};
     }
-    
+
     render(data, options={}) {
         let ctx = this.buffer.getContext("2d");
 
@@ -77,10 +77,10 @@ class TextureRenderer {
         }
 
     }
-    
+
     scale(val) {
         if(val === 1) return this.buffer;
-        
+
         let tempBuffer = document.createElement("canvas");
         tempBuffer.width = Math.round(this.buffer.width * val) || 1;
         tempBuffer.height = Math.round(this.buffer.height * val) || 1;
@@ -90,20 +90,20 @@ class TextureRenderer {
 
         return tempBuffer;
     }
-    
+
     renderExtrude(ctx, item, options) {
         if(!options.extrude) return;
-        
+
         let dx = item.frame.x;
         let dy = item.frame.y;
-        
+
         if(item.rotated) {
             dx = 0;
             dy = 0;
         }
 
         let img = item.image;
-        
+
         //Draw corners
         ctx.drawImage(img,
             0, 0,
@@ -128,7 +128,7 @@ class TextureRenderer {
             1, 1,
             dx + item.frame.w, dy + item.frame.h,
             options.extrude, options.extrude);
-        
+
         //Draw borders
         ctx.drawImage(img,
             0, item.spriteSourceSize.y,
@@ -155,7 +155,7 @@ class TextureRenderer {
             item.frame.w, options.extrude);
 
     }
-    
+
     renderItem(ctx, item, options) {
         if(!item.skipRender) {
 
@@ -168,18 +168,18 @@ class TextureRenderer {
                 ctx.rotate(Math.PI / 2);
 
                 this.renderExtrude(ctx, item, options);
-                
+
                 ctx.drawImage(img,
                               item.spriteSourceSize.x, item.spriteSourceSize.y,
                               item.spriteSourceSize.w, item.spriteSourceSize.h,
                               0, 0,
                               item.frame.w, item.frame.h);
-                
+
                 ctx.restore();
             }
             else {
                 this.renderExtrude(ctx, item, options);
-                
+
                 ctx.drawImage(img,
                               item.spriteSourceSize.x, item.spriteSourceSize.y,
                               item.spriteSourceSize.w, item.spriteSourceSize.h,

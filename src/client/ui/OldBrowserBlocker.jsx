@@ -9,20 +9,20 @@ class OldBrowserBlocker extends React.Component {
 
     render() {
         let ok = true;
-        
+
         //check local storage
         if(!window.localStorage) ok = false;
-        
+
         //check file reader
         if(!window.FileReader) ok = false;
-        
+
         //check canvas
         let canvas = document.createElement("canvas");
         if(!canvas.getContext) ok = false;
-        
+
         //check ajax
         if(!window.XMLHttpRequest) ok = false;
-        
+
         if(!ok) {
             return (
                 <div ref="shader" className="old-browser-shader">
@@ -31,7 +31,7 @@ class OldBrowserBlocker extends React.Component {
                         <br/><br/>
                         {I18.f("OLD_BROWSER_MESSAGE2")}
                         <br/><br/><br/>
-                        
+
                         <a href="https://www.google.ru/chrome/browser/" target="_blank" title="Google Chrome">
                             <img src="static/images/browser/chrome.png"/>
                         </a>
@@ -47,7 +47,7 @@ class OldBrowserBlocker extends React.Component {
                         <a href="https://www.microsoft.com/windows/microsoft-edge" target="_blank" title="Microsoft Edge">
                             <img src="static/images/browser/edge.png"/>
                         </a>
-                        
+
                     </div>
                 </div>
             );

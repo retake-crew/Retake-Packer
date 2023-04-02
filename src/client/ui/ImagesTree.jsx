@@ -2,7 +2,7 @@ import React from 'react';
 import {GLOBAL_EVENT, Observer} from "../Observer";
 
 class ImagesTree extends React.Component {
-    
+
     constructor(props) {
         super(props);
     }
@@ -53,7 +53,7 @@ class TreeItem extends React.Component {
 
     constructor(props) {
         super(props);
-        
+
         this.onSelect = this.onSelect.bind(this);
     }
 
@@ -64,7 +64,7 @@ class TreeItem extends React.Component {
             ctrlKey: e.ctrlKey,
             shiftKey: e.shiftKey
         });
-        
+
         e.preventDefault();
         e.stopPropagation();
         return false;
@@ -99,7 +99,7 @@ class TreeView extends React.Component {
 
     handleCollapse(e) {
         this.setState({collapsed: !this.state.collapsed});
-        
+
         e.preventDefault();
         e.stopPropagation();
         return false;

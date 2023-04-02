@@ -10,15 +10,15 @@ class JsonHash extends Splitter {
             cb(false);
         }
     }
-    
+
     static split(data, options, cb) {
         let res = [];
 
         try {
             let json = JSON.parse(data);
-            
+
             let names = Object.keys(json.frames);
-            
+
             for(let name of names) {
                 let item = json.frames[name];
 

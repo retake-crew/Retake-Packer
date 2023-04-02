@@ -1,5 +1,13 @@
 [
   {
+    "type": "Sparrow",
+    "description": "Sparrow format",
+    "allowTrim": true,
+    "allowRotation": true,
+    "template": "Sparrow.mst",
+    "fileExt": "xml"
+  },
+  {
     "type": "JSON (hash)",
     "description": "Json hash",
     "allowTrim": true,
@@ -110,14 +118,6 @@
     "allowRotation": true,
     "template": "Unreal.mst",
     "fileExt": "paper2dsprites"
-  },
-  {
-    "type": "Starling",
-    "description": "Starling format",
-    "allowTrim": true,
-    "allowRotation": true,
-    "template": "Starling.mst",
-    "fileExt": "xml"
   },
   {
     "type": "UIKit",

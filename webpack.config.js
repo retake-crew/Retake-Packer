@@ -76,7 +76,8 @@ let config = {
         ]
     },
     optimization: {
-        minimize: false
+        minimize: NODE_ENV == "production",
+        usedExports: true,
     },
     plugins: plugins
 };

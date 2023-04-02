@@ -10,10 +10,10 @@ class Base64ImagesLoader {
 
     load(data, onProgress=null, onEnd=null) {
         this.data = data.slice();
-        
+
         this.onProgress = onProgress;
         this.onEnd = onEnd;
-        
+
         for(let item of data) {
             let img = new Image();
             img.src = item.url;
@@ -22,7 +22,7 @@ class Base64ImagesLoader {
 
             this.loaded[item.name] = img;
         }
-        
+
         this.waitImages();
     }
 
@@ -30,7 +30,7 @@ class Base64ImagesLoader {
         let ready = true;
         let loaded = 0;
         let keys = Object.keys(this.loaded);
-        
+
         for(let key of keys) {
             if(!this.loaded[key].complete) {
                 ready = false;

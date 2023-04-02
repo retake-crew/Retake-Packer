@@ -5,10 +5,10 @@ import {GLOBAL_EVENT, Observer} from "../Observer";
 import {smartSortImages} from '../utils/common';
 
 class SpritesPlayer extends React.Component {
-    
+
     constructor(props) {
         super(props);
-                
+
         this.textures = [];
 
         this.currentTextures = [];
@@ -16,9 +16,9 @@ class SpritesPlayer extends React.Component {
 
         this.width = 0;
         this.height = 0;
-        
+
         this.updateTimer = null;
-        
+
         this.selectedImages = [];
 
         this.update = this.update.bind(this);
@@ -33,7 +33,7 @@ class SpritesPlayer extends React.Component {
         this.selectedImages = list;
         this.updateCurrentTextures();
     }
-    
+
     componentDidMount() {
         if(this.props.start) this.setup();
         else this.stop();
@@ -43,17 +43,17 @@ class SpritesPlayer extends React.Component {
         if(this.props.start) this.setup();
         else this.stop();
     }
-    
+
     setup() {
         ReactDOM.findDOMNode(this.refs.playerContainer).className = "player-view-container " + this.props.textureBack;
-        
+
         this.textures = [];
-        
+
         if(!this.props.data) return;
 
         this.width = 0;
         this.height = 0;
-        
+
         for(let part of this.props.data) {
             let baseTexture = part.buffer;
 
@@ -75,7 +75,7 @@ class SpritesPlayer extends React.Component {
         let canvas = ReactDOM.findDOMNode(this.refs.view);
         canvas.width = this.width;
         canvas.height = this.height;
-        
+
         this.updateCurrentTextures();
     }
 
@@ -101,7 +101,7 @@ class SpritesPlayer extends React.Component {
                 textures.push(tex);
             }
         }
-        
+
         textures = textures.sort((a, b) => {
             return smartSortImages(a.config.name, b.config.name);
         });
@@ -110,7 +110,7 @@ class SpritesPlayer extends React.Component {
         this.currentFrame = 0;
         this.update(true);
     }
-    
+
     update(skipFrameUpdate) {
         clearTimeout(this.updateTimer);
 
@@ -132,11 +132,11 @@ class SpritesPlayer extends React.Component {
 
         let texture = this.currentTextures[this.currentFrame];
         if(!texture) return;
-        
+
         let buffer = ReactDOM.findDOMNode(this.refs.buffer);
         buffer.width = texture.config.sourceSize.w;
         buffer.height = texture.config.sourceSize.h;
-        
+
         let bufferCtx = buffer.getContext("2d");
         bufferCtx.clearRect(0, 0, texture.config.sourceSize.w, texture.config.sourceSize.h);
 
@@ -170,11 +170,11 @@ class SpritesPlayer extends React.Component {
             x - texture.config.sourceSize.w/2, y - texture.config.sourceSize.h/2,
             texture.config.sourceSize.w, texture.config.sourceSize.h);
     }
-    
+
     stop() {
         clearTimeout(this.updateTimer);
     }
-    
+
     render() {
         return (
             <div ref="container" className="player-container">
@@ -191,21 +191,21 @@ class SpritesPlayer extends React.Component {
                                     {I18.f("ANIMATION_SPEED")}
                                 </td>
                                 <td>
-                                    <input type="range" ref="speed" max="60" min="1" defaultValue="10" onChange={this.onSpeedChange}/>                                    
+                                    <input type="range" ref="speed" max="60" min="1" defaultValue="10" onChange={this.onSpeedChange}/>
                                 </td>
-                                <td>                                    
-                                    <div ref="fps" className="player-fps">10 fps</div>                                    
+                                <td>
+                                    <div ref="fps" className="player-fps">10 fps</div>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        
+
                     </div>
                 </div>
             </div>
         )
     }
-    
+
 }
 
 export default SpritesPlayer;

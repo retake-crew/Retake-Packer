@@ -71,7 +71,7 @@ class I18 {
 	    let lang = window.navigator.userLanguage || window.navigator.language || "";
 		if (!locale) locale = lang.substr(0, 2);
 	    if(I18.supportedLanguages.indexOf(locale) < 0) locale = I18.supportedLanguages[0];
-	    
+
 	    I18.currentLocale = locale;
 	}
 
@@ -100,7 +100,7 @@ class I18 {
             if(callback) callback();
         });
     }
-	
+
     static setup(data) {
 		I18.strings = data;
 	}
@@ -120,7 +120,7 @@ class I18 {
 
 		let str = I18.getStringOrNull(key, values);
 		if (str == null) return "{" + key + "}";
-		
+
 		return str;
 	}
 
@@ -130,7 +130,7 @@ class I18 {
 
 		let value = I18.strings[key];
 		if (typeof value == "undefined") value = null;
-		
+
 		if(args == null || value == null) return value;
 		else {
 		    args = [value].concat(I18.arrayAntidot(args));
@@ -191,7 +191,7 @@ class I18 {
 
         let doFormat = function(substring, valueIndex, flags, minWidth, _, precision, type) {
             let number, prefix, method, textTransform, value;
-    
+
             if (substring === '%%') return '%';
 
             let leftJustify = false;
@@ -224,28 +224,28 @@ class I18 {
                         break;
                 }
             }
-    
+
             if (!minWidth) minWidth = 0;
             else if (minWidth === '*') minWidth = +a[i++];
             else if (minWidth.charAt(0) == '*') minWidth = +a[minWidth.slice(1, -1)];
             else minWidth = +minWidth;
-    
+
             if (minWidth < 0) {
                 minWidth = -minWidth;
                 leftJustify = true;
             }
-    
+
             if (!isFinite(minWidth)) {
                 throw new Error('sprintf: (minimum-)width must be finite');
             }
-    
+
             if (!precision) precision = 'fFeE'.indexOf(type) > -1 ? 6 : (type === 'd') ? 0 : undefined;
             else if (precision === '*') precision = +a[i++];
             else if (precision.charAt(0) == '*') precision = +a[precision.slice(1, -1)];
             else  precision = +precision;
-    
+
             value = valueIndex ? a[valueIndex.slice(0, -1)] : a[i++];
-    
+
             switch (type) {
                 case 's':
                     return formatString(String(value), leftJustify, minWidth, precision, zeroPad, customPadChar);
@@ -284,7 +284,7 @@ class I18 {
                     return substring;
             }
         };
-    
+
         return format.replace(regex, doFormat);
     }
 }

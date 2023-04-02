@@ -21,27 +21,27 @@ class PackResults extends React.Component {
         };
 
         this.rangeRef = React.createRef();
-        this.wheelRef = React.createRef();        
-        
+        this.wheelRef = React.createRef();
+
         this.setBack = this.setBack.bind(this);
         this.changeOutlines = this.changeOutlines.bind(this);
         this.changeScale = this.changeScale.bind(this);
-        this.toggleSpritesPlayer = this.toggleSpritesPlayer.bind(this);        
+        this.toggleSpritesPlayer = this.toggleSpritesPlayer.bind(this);
         this.clearSelection = this.clearSelection.bind(this);
         this.handleWheel = this.handleWheel.bind(this);
 
         Observer.on(GLOBAL_EVENT.PACK_COMPLETE, this.updatePackResult, this);
-        Observer.on(GLOBAL_EVENT.IMAGES_LIST_SELECTED_CHANGED, this.onImagesSelected, this);        
+        Observer.on(GLOBAL_EVENT.IMAGES_LIST_SELECTED_CHANGED, this.onImagesSelected, this);
     }
-    
+
     componentDidMount() {
         this.wheelRef.current.addEventListener('wheel', this.handleWheel, { passive: false });
     }
-    
+
     onImagesSelected(data) {
         this.setState({selectedImages: data});
     }
-    
+
     updatePackResult(data) {
         this.setState({packResult: data});
     }
@@ -58,7 +58,7 @@ class PackResults extends React.Component {
 
     clearSelection() {
         if(this.state.playerVisible) return;
-        
+
         Observer.emit(GLOBAL_EVENT.IMAGE_CLEAR_SELECTION, null);
     }
 
@@ -73,14 +73,14 @@ class PackResults extends React.Component {
                 	value = 0.1;
                 }
                 this.setState({scale: value});
-            }            
-        } else {            
+            }
+        } else {
             if (this.state.scale < 2) {
                 value = Number((this.state.scale + this.step).toPrecision(2));
                 this.setState({scale: value});
             }
         }
-        
+
         // update range component
         this.rangeRef.current.value = value;
 
@@ -101,22 +101,22 @@ class PackResults extends React.Component {
         this.setState({playerVisible: !this.state.playerVisible});
     }
 
-    render() {       
+    render() {
         let views = [], ix=0;
         if(this.state.packResult) {
             for (let item of this.state.packResult) {
                 views.push((
                     <TextureView key={"tex-view-" + ix} data={item} scale={this.state.scale} textureBack={this.state.textureBack} selectedImages={this.state.selectedImages} displayOutline={this.state.displayOutline} />
-                ));               
+                ));
                 ix++;
             }
         }
-        
+
         return (
             <div className="results-view border-color-gray">
-                
+
                 <div className="results-view-wrapper">
-                
+
                     <div ref={this.wheelRef} className="results-view-container back-white" onClick={this.clearSelection}>
                         <div className={this.state.playerVisible ? "block-hidden" : "block-visible"}>
                             {views}
@@ -125,11 +125,11 @@ class PackResults extends React.Component {
                             <SpritesPlayer ref="spritesPlayer" data={this.state.packResult} start={this.state.playerVisible} textureBack={this.state.textureBack} />
                         </div>
                     </div>
-                    
+
                     <div className="results-view-footer back-white border-color-gray">
-    
+
                         <hr/>
-                        
+
                         <table>
                             <tbody>
                                 <tr>
@@ -154,12 +154,12 @@ class PackResults extends React.Component {
                                     </td>
                                     <td>
                                         <div className="btn back-800 border-color-gray color-white" onClick={this.toggleSpritesPlayer}>{I18.f("SHOW_SPRITES")}</div>
-                                    </td>                                    
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                     </div>
-                    
+
                 </div>
             </div>
         );

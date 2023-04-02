@@ -12,7 +12,7 @@ import Downloader from "platform/Downloader";
 class SheetSplitter extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.textureBackColors = ["grid-back", "white-back", "pink-back", "black-back"];
         this.step = 0.1;
 
@@ -28,23 +28,23 @@ class SheetSplitter extends React.Component {
         this.texture = null;
         this.data = null;
         this.frames = null;
-        
+
         this.textureName = '';
         this.dataName = '';
 
         this.buffer = document.createElement('canvas');
-        
+
         this.doSplit = this.doSplit.bind(this);
         this.selectTexture = this.selectTexture.bind(this);
         this.selectDataFile = this.selectDataFile.bind(this);
         this.updateFrames = this.updateFrames.bind(this);
         this.updateView = this.updateView.bind(this);
-        this.changeSplitter = this.changeSplitter.bind(this);       
-        this.setBack = this.setBack.bind(this);       
+        this.changeSplitter = this.changeSplitter.bind(this);
+        this.setBack = this.setBack.bind(this);
         this.changeScale = this.changeScale.bind(this);
         this.handleWheel = this.handleWheel.bind(this);
     }
-    
+
     componentDidMount() {
         this.updateTexture();
         this.wheelRef.current.addEventListener('wheel', this.handleWheel, { passive: false });
@@ -75,35 +75,35 @@ class SheetSplitter extends React.Component {
         event.stopPropagation();
         return false;
     }
-    
+
     doSplit() {
         Observer.emit(GLOBAL_EVENT.SHOW_SHADER);
-        
+
         if(!this.frames || !this.frames.length) {
             Observer.emit(GLOBAL_EVENT.HIDE_SHADER);
             Observer.emit(GLOBAL_EVENT.SHOW_MESSAGE, I18.f('SPLITTER_ERROR_NO_FRAMES'));
-            
+
             return;
         }
-        
+
         let ctx = this.buffer.getContext('2d');
         let files = [];
-        
+
         let holdTrim = ReactDOM.findDOMNode(this.refs.holdtrim).checked;
-        
-        for(let item of this.frames) {            
-            let trimmed = item.trimmed ? holdTrim : false;            
-            
+
+        for(let item of this.frames) {
+            let trimmed = item.trimmed ? holdTrim : false;
+
             this.buffer.width = (holdTrim && trimmed) ? item.spriteSourceSize.w : item.sourceSize.w;
             this.buffer.height = (holdTrim && trimmed) ? item.spriteSourceSize.h : item.sourceSize.h;
-            
+
             ctx.clearRect(0, 0, this.buffer.width, this.buffer.height);
-            
+
             if(item.rotated) {
                 ctx.save();
 
                 ctx.translate(item.spriteSourceSize.x + item.spriteSourceSize.w/2, item.spriteSourceSize.y + item.spriteSourceSize.h/2);
-                ctx.rotate(this.state.splitter.inverseRotation ? Math.PI/2 : -Math.PI/2);                
+                ctx.rotate(this.state.splitter.inverseRotation ? Math.PI/2 : -Math.PI/2);
 
                 let dx = trimmed ? item.spriteSourceSize.y - item.spriteSourceSize.h/2 : -item.spriteSourceSize.h/2;
                 let dy = trimmed ? -(item.spriteSourceSize.x + item.spriteSourceSize.w/2) : -item.spriteSourceSize.w/2;
@@ -113,14 +113,14 @@ class SheetSplitter extends React.Component {
                     item.frame.h, item.frame.w,
                     dx, dy,
                     item.spriteSourceSize.h, item.spriteSourceSize.w);
-                
+
                 ctx.restore();
             }
             else {
-                
+
                 let dx = trimmed ? 0 : item.spriteSourceSize.x;
                 let dy = trimmed ? 0 : item.spriteSourceSize.y;
-                
+
                 ctx.drawImage(this.texture,
                     item.frame.x, item.frame.y,
                     item.frame.w, item.frame.h,
@@ -133,7 +133,7 @@ class SheetSplitter extends React.Component {
                 ext = 'png';
                 item.name += '.' + ext;
             }
-            
+
             let base64 = this.buffer.toDataURL(ext === 'png' ? 'image/png' : 'image/jpeg');
             base64 = base64.split(',').pop();
 
@@ -143,7 +143,7 @@ class SheetSplitter extends React.Component {
                 base64: base64
             });
         }
-        
+
         Downloader.run(files, this.textureName + '.zip');
 
         Observer.emit(GLOBAL_EVENT.HIDE_SHADER);
@@ -156,27 +156,27 @@ class SheetSplitter extends React.Component {
             let loader = new LocalImagesLoader();
             loader.load(e.target.files, null, data => {
                 let keys = Object.keys(data);
-                
-                this.textureName = keys[0]; 
-                
+
+                this.textureName = keys[0];
+
                 this.texture = data[this.textureName];
                 ReactDOM.findDOMNode(this.refs.textureName).innerHTML = this.textureName;
-                
+
                 this.updateView();
 
                 Observer.emit(GLOBAL_EVENT.HIDE_SHADER);
             });
         }
     }
-    
+
     updateTexture() {
         let canvas = ReactDOM.findDOMNode(this.refs.view);
-        
+
         if(this.texture) {
             canvas.width = this.texture.width;
             canvas.height = this.texture.height;
             canvas.style.display = '';
-            
+
             let ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(this.texture, 0, 0);
@@ -192,20 +192,20 @@ class SheetSplitter extends React.Component {
     selectDataFile(e) {
         if(e.target.files.length) {
             let item = e.target.files[0];
-            
+
             let reader = new FileReader();
             reader.onload = e => {
-                
+
                 let content = e.target.result;
                 content = content.split(',');
                 content.shift();
                 content = atob(content);
-                
+
                 this.data = content;
 
                 this.dataName = item.name;
                 ReactDOM.findDOMNode(this.refs.dataFileName).innerHTML = this.dataName;
-                
+
                 getSplitterByData(this.data, (splitter) => {
                     this.setState({splitter: splitter});
                     this.updateView();
@@ -215,10 +215,10 @@ class SheetSplitter extends React.Component {
             reader.readAsDataURL(item);
         }
     }
-    
+
     updateFrames() {
         if(!this.texture) return;
-        
+
         this.state.splitter.split(this.data, {
             textureWidth: this.texture.width,
             textureHeight: this.texture.height,
@@ -257,7 +257,7 @@ class SheetSplitter extends React.Component {
             }
         });
     }
-    
+
     updateView() {
         this.updateTexture();
         this.updateFrames();
@@ -265,9 +265,9 @@ class SheetSplitter extends React.Component {
 
     changeSplitter(e) {
         let splitter = getSplitterByType(e.target.value);
-        
+
         this.state.splitter = splitter;
-        
+
         this.setState({splitter: splitter});
         this.updateView();
     }
@@ -300,25 +300,25 @@ class SheetSplitter extends React.Component {
     changeScale(e) {
         let val = Number(e.target.value);
         this.setState({scale: val});
-        this.updateTextureScale(val);        
+        this.updateTextureScale(val);
     }
 
     close() {
         Observer.emit(GLOBAL_EVENT.HIDE_SHEET_SPLITTER);
     }
 
-    render() {        
+    render() {
         let displayType = this.state.splitter.type;
-        
+
         let displayGridProperties = 'none';
-        
+
         switch (displayType) {
             case "Grid": {
                 displayGridProperties = '';
                 break;
             }
         }
-        
+
         return (
             <div className="sheet-splitter-shader">
                 <div className="sheet-splitter-content">

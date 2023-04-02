@@ -10,7 +10,7 @@ class XML extends Splitter {
                     cb(false);
                     return;
                 }
-                
+
                 cb(atlas.TextureAtlas && Array.isArray(atlas.TextureAtlas.sprite));
             });
         }
@@ -31,7 +31,7 @@ class XML extends Splitter {
                 }
 
                 let list = atlas.TextureAtlas.sprite;
-                
+
                 for(let item of list) {
                     item = item['$'];
 
@@ -45,7 +45,7 @@ class XML extends Splitter {
                     item.oH *= 1;
 
                     let trimmed = item.w < item.oW || item.h < item.oH;
-                    
+
                     res.push({
                         name: Splitter.fixFileName(item.n),
                         frame: {
@@ -68,7 +68,7 @@ class XML extends Splitter {
                         trimmed: trimmed
                     });
                 }
-                
+
                 cb(res);
             });
         }

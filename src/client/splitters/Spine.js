@@ -4,12 +4,12 @@ class Spine extends Splitter {
     static check(data, cb) {
         let lines = data.split('\n');
         if(lines[0] === undefined || String(lines[0]).trim() !== '') cb(false);
-        
+
         if(String(lines[lines.length-1]).trim() !== '') cb(false);
 
         cb(lines[2] && lines[2].trim().indexOf('size:') === 0);
     }
-    
+
     static finalizeItem(item) {
         if(item.offset) {
             item.spriteSourceSize = {
@@ -24,27 +24,27 @@ class Spine extends Splitter {
         }
 
         item.trimmed = item.frame.w !== item.sourceSize.w || item.frame.h !== item.sourceSize.h;
-        
+
         return item;
     }
-    
+
     static split(data, options, cb) {
         let res = [];
 
         let lines = data.split('\n');
-        
+
         let currentItem = null;
-        
+
         for(let i=6; i<lines.length; i++) {
             let line = lines[i];
-            
+
             if(!line) continue;
-            
+
             if(line[0].trim()) {
                 if(currentItem) {
                     res.push(Spine.finalizeItem(currentItem));
                 }
-                
+
                 currentItem = {name: Splitter.fixFileName(line.trim())};
             }
             else {
@@ -52,12 +52,12 @@ class Spine extends Splitter {
                 let parts = line.split(':');
                 let name = parts[0].trim();
                 let val = parts[1].trim();
-                
+
                 let valParts = val.split(',');
                 valParts[0] = valParts[0].trim();
-                
+
                 if(valParts[1]) valParts[1] = valParts[1].trim();
-                
+
                 switch (name) {
                     case "rotate":
                         currentItem.rotated = val === 'true';
@@ -96,7 +96,7 @@ class Spine extends Splitter {
     static get type() {
         return 'Spine';
     }
-    
+
     static get inverseRotation() {
         return true;
     }

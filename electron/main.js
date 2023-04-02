@@ -1,5 +1,5 @@
 const path = require('path');
-const tinify = require('tinify');
+//const tinify = require('tinify');
 const argv = require('optimist').argv;
 const windowStateKeeper = require('electron-window-state');
 const {app, BrowserWindow, ipcMain, Menu, shell} = require('electron');
@@ -22,12 +22,12 @@ function createWindow() {
 		w = 1320;
 		h = 740;
 	}
-	
+
 	let mainWindowState = windowStateKeeper({
         defaultWidth: w,
         defaultHeight: h
     });
-    
+
     mainWindow = new BrowserWindow({
         x: mainWindowState.x,
         y: mainWindowState.y,
@@ -60,11 +60,11 @@ function createWindow() {
             e.preventDefault();
         }
     });
-    
+
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
-	
+
 	mainWindow.webContents.on('will-navigate', handleRedirect);
 	mainWindow.webContents.on('new-window', handleRedirect);
 
@@ -72,7 +72,7 @@ function createWindow() {
         CURRENT_PROJECT = "";
         CURRENT_PROJECT_MODIFIED = false;
         updateWindowTitle();
-		
+
 		if(argv.env !== 'development' && process.argv.length > 1) {
 			sendMessage({actionName: 'project-load', custom: process.argv[1]});
 		}
@@ -89,7 +89,7 @@ function createWindow() {
 
 function showInputContextMenu(e, props) {
     if(!props.isEditable) return;
-    
+
     const menu = Menu.buildFromTemplate([
         {
             label: LOCALE_STRINGS.CONTEXT_MENU_UNDO,
@@ -183,9 +183,9 @@ function handleRedirect(e, url) {
 
 function buildMenu() {
     let template = [];
-    
+
     let recentProjects = [];
-    
+
     if(RECENT_PROJECTS.length) {
         for(let path of RECENT_PROJECTS) {
             let name = path.split("/").pop();
@@ -198,7 +198,7 @@ function buildMenu() {
 
     let quitAcc = "CmdOrCtrl+F4";
     if(process.platform === "darwin") quitAcc = "CmdOrCtrl+Q";
-    
+
     template.push({
         label: LOCALE_STRINGS.MENU_FILE,
         submenu: [
@@ -237,7 +237,7 @@ function buildMenu() {
             {label: LOCALE_STRINGS.MENU_TOOLS_SPLITTER, actionName: 'action-show-splitter', click: sendMessage,}
         ]
     });
-    
+
     let langs = [];
     if(LANGUAGES !== []) {
         for (let lang of LANGUAGES) {
@@ -263,14 +263,14 @@ function buildMenu() {
             {label: LOCALE_STRINGS.MENU_HELP_ABOUT, actionName: 'show-about', click: sendMessage, accelerator: 'F1'}
         ]
     });
-    
+
     if(argv.env === 'development') {
         template.push({label: 'Dev', submenu: [
             {label: 'Console', click: () => mainWindow.webContents.openDevTools()},
             {label: 'Reload', click: () => mainWindow.webContents.reload()}
         ]});
     }
-    
+
     let menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
 }
@@ -289,7 +289,7 @@ function sendMessage(e) {
     if(e.custom) {
         payload = {data: e.custom};
     }
-    
+
     mainWindow.send(e.actionName, payload);
 }
 
@@ -309,7 +309,7 @@ function updateWindowTitle() {
         mainWindow.setTitle("");
         return;
     }
-    
+
     let name;
 
     if(!CURRENT_PROJECT) name = "untitled.ftpp";
@@ -332,7 +332,7 @@ app.on('activate', function () {
     }
 });
 
-ipcMain.on('tinify', (e, data) => {
+/*ipcMain.on('tinify', (e, data) => {
     tinify.key = data.key;
     tinify.fromBuffer(Buffer.from(data.imageData, 'base64')).toBuffer((err, res) => {
         if (err) {
@@ -343,14 +343,14 @@ ipcMain.on('tinify', (e, data) => {
             });
             return;
         }
-        
+
         e.sender.send('tinify-complete', {
             success: true,
             uid: data.uid,
             data: res.toString('base64')
         });
     });
-});
+});*/
 
 ipcMain.on('update-app-info', (e, data) => {
     APP_INFO = data;

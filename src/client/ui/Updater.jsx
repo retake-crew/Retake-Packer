@@ -14,17 +14,17 @@ class Updater extends React.Component {
             installation: false,
             downloadProgress: 0
         };
-        
+
         this.close = this.close.bind(this);
         this.skip = this.skip.bind(this);
         this.doSkip = this.doSkip.bind(this);
         this.install = this.install.bind(this);
-        
+
         Observer.on(GLOBAL_EVENT.DOWNLOAD_PROGRESS_CHANGED, this.changeDownloadProgress, this);
-        
+
         this.skippedVersion = Storage.load(STORAGE_SKIPPED_VERSIONS_KEY);
         if(!Array.isArray(this.skippedVersion)) this.skippedVersion = [];
-        
+
         if(this.skippedVersion.indexOf(this.props.data.releaseName) >= 0) this.close();
     }
 
@@ -32,7 +32,7 @@ class Updater extends React.Component {
         Observer.off(GLOBAL_EVENT.DOWNLOAD_PROGRESS_CHANGED, this.changeDownloadProgress, this);
         Observer.emit(GLOBAL_EVENT.HIDE_UPDATER);
     }
-    
+
     skip() {
         let buttons = {
             "yes": {caption: I18.f("YES"), callback: this.doSkip},
@@ -64,7 +64,7 @@ class Updater extends React.Component {
 
                     <div className="updater-header">{I18.f("UPDATER_TITLE", this.props.data.releaseName)}</div>
                     <div className="updater-release-notes" dangerouslySetInnerHTML={{ __html: this.props.data.releaseNotes }}></div>
-                    
+
                     {
                         this.state.installation
                         ?

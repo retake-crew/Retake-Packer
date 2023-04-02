@@ -19,7 +19,7 @@ class ImagesList extends React.Component {
         super(props);
 
         INSTANCE = this;
-        
+
         this.addImages = this.addImages.bind(this);
         this.addZip = this.addZip.bind(this);
         this.addImagesFs = this.addImagesFs.bind(this);
@@ -31,18 +31,18 @@ class ImagesList extends React.Component {
         this.onFilesDrop = this.onFilesDrop.bind(this);
         this.handleImageItemSelected = this.handleImageItemSelected.bind(this);
         this.handleImageClearSelection = this.handleImageClearSelection.bind(this);
-        
+
         Observer.on(GLOBAL_EVENT.IMAGE_ITEM_SELECTED, this.handleImageItemSelected, this);
         Observer.on(GLOBAL_EVENT.IMAGE_CLEAR_SELECTION, this.handleImageClearSelection, this);
         Observer.on(GLOBAL_EVENT.FS_CHANGES, this.handleFsChanges, this);
-		
+
 		this.handleKeys = this.handleKeys.bind(this);
-		
+
 		window.addEventListener("keydown", this.handleKeys, false);
 
         this.state = {images: {}};
     }
-    
+
     static get i() {
         return INSTANCE;
     }
@@ -51,17 +51,17 @@ class ImagesList extends React.Component {
         Observer.off(GLOBAL_EVENT.IMAGE_ITEM_SELECTED, this.handleImageItemSelected, this);
         Observer.off(GLOBAL_EVENT.IMAGE_CLEAR_SELECTION, this.handleImageClearSelection, this);
         Observer.off(GLOBAL_EVENT.FS_CHANGES, this.handleFsChanges, this);
-		
+
 		window.removeEventListener("keydown", this.handleKeys, false);
     }
-	
+
 	handleKeys(e) {
 		if(e) {
             let key = e.keyCode || e.which;
             if(key === 65 && e.ctrlKey) this.selectAllImages();
         }
 	}
-    
+
     componentDidMount() {
         let dropZone = ReactDOM.findDOMNode(this.refs.imagesTree);
         if(dropZone) {
@@ -80,20 +80,20 @@ class ImagesList extends React.Component {
             };
         }
     }
-    
+
     setImages(images) {
         this.setState({images: images});
         Observer.emit(GLOBAL_EVENT.IMAGES_LIST_CHANGED, images);
     }
-    
+
     onFilesDrop(e) {
         e.preventDefault();
-        
+
         if(e.dataTransfer.files.length) {
             let loader = new LocalImagesLoader();
             loader.load(e.dataTransfer.files, null, data => this.loadImagesComplete(data));
         }
-        
+
         return false;
     }
 
@@ -105,7 +105,7 @@ class ImagesList extends React.Component {
             loader.load(e.target.files, null, data => this.loadImagesComplete(data));
         }
     }
-    
+
     addZip(e) {
         let file = e.target.files[0];
         if(file) {
@@ -115,7 +115,7 @@ class ImagesList extends React.Component {
             loader.load(file, null, data => this.loadImagesComplete(data));
         }
     }
-    
+
     addImagesFs() {
         Observer.emit(GLOBAL_EVENT.SHOW_SHADER);
         FileSystem.addImages(this.loadImagesComplete);
@@ -130,7 +130,7 @@ class ImagesList extends React.Component {
         let image = null;
         let images = this.state.images;
         let imageKey = "";
-        
+
         let keys = Object.keys(images);
         for(let key of keys) {
             let item = images[key];
@@ -140,7 +140,7 @@ class ImagesList extends React.Component {
                 break;
             }
         }
-        
+
         if(data.event === "unlink" && image) {
             delete images[imageKey];
             this.setState({images: images});
@@ -150,16 +150,16 @@ class ImagesList extends React.Component {
         if(data.event === "add" || data.event === "change") {
             let folder = "";
             let addPath = "";
-            
+
             for(let key of keys) {
                 let item = images[key];
-                
+
                 if(item.fsPath.folder && data.path.substr(0, item.fsPath.folder.length) === item.fsPath.folder) {
                     folder = item.fsPath.folder;
                     addPath = folder.split("/").pop();
                 }
             }
-            
+
             let name = "";
             if(folder) {
                 name = addPath + data.path.substr(folder.length);
@@ -167,25 +167,25 @@ class ImagesList extends React.Component {
             else {
                 name = data.path.split("/").pop();
             }
-            
+
             FileSystem.loadImages([{name: name, path: data.path, folder: folder}], this.loadImagesComplete);
         }
     }
-    
+
     loadImagesComplete(data=[]) {
 
         Observer.emit(GLOBAL_EVENT.HIDE_SHADER);
-        
+
         if(PLATFORM === "web") {
             ReactDOM.findDOMNode(this.refs.addImagesInput).value = "";
             ReactDOM.findDOMNode(this.refs.addZipInput).value = "";
         }
-        
+
         let names = Object.keys(data);
-        
+
         if(names.length) {
             let images = this.state.images;
-            
+
             for (let name of names) {
                 images[name] = data[name];
             }
@@ -196,17 +196,17 @@ class ImagesList extends React.Component {
             Observer.emit(GLOBAL_EVENT.IMAGES_LIST_CHANGED, images);
         }
     }
-    
+
     sortImages(images) {
         let names = Object.keys(images);
         names.sort(smartSortImages);
 
         let sorted = {};
-        
+
         for(let name of names) {
             sorted[name] = images[name];
         }
-        
+
         return sorted;
     }
 
@@ -217,11 +217,11 @@ class ImagesList extends React.Component {
                 "yes": {caption: I18.f("YES"), callback: this.doClear},
                 "no": {caption: I18.f("NO")}
             };
-            
+
             Observer.emit(GLOBAL_EVENT.SHOW_MESSAGE, I18.f("CLEAR_WARNING"), buttons);
         }
     }
-    
+
     doClear() {
         Observer.emit(GLOBAL_EVENT.IMAGES_LIST_CHANGED, {});
         Observer.emit(GLOBAL_EVENT.IMAGES_LIST_SELECTED_CHANGED, []);
@@ -237,42 +237,42 @@ class ImagesList extends React.Component {
         this.setState({images: this.state.images});
         this.emitSelectedChanges();
     }
-    
+
     removeImagesSelect() {
         let images = this.state.images;
         for(let key in images) {
             images[key].selected = false;
         }
     }
-    
+
     getCurrentImage() {
         let images = this.state.images;
         for(let key in images) {
             if(images[key].current) return images[key];
         }
-        
+
         return null;
     }
-    
+
     getImageIx(image) {
         let ix = 0;
-        
+
         let images = this.state.images;
         for(let key in images) {
             if(images[key] === image) return ix;
             ix++;
         }
-        
+
         return -1;
     }
-    
+
     bulkSelectImages(to) {
         let current = this.getCurrentImage();
         if(!current) {
             to.selected = true;
             return;
         }
-        
+
         let fromIx = this.getImageIx(current);
         let toIx = this.getImageIx(to);
 
@@ -284,10 +284,10 @@ class ImagesList extends React.Component {
             ix++;
         }
     }
-    
+
     selectImagesFolder(path, selected) {
         let images = this.state.images;
-        
+
         let first = false;
         for(let key in images) {
             if(key.substr(0, path.length + 1) === path + "/") {
@@ -300,27 +300,27 @@ class ImagesList extends React.Component {
             }
         }
     }
-    
+
     clearCurrentImage() {
         let images = this.state.images;
         for(let key in images) {
             images[key].current = false;
         }
     }
-    
+
     getFirstImageInFolder(path) {
         let images = this.state.images;
 
         for(let key in images) {
             if (key.substr(0, path.length + 1) === path + "/") return images[key];
         }
-        
+
         return null;
     }
 
     getLastImageInFolder(path) {
         let images = this.state.images;
-        
+
         let ret = null;
         for(let key in images) {
             if (key.substr(0, path.length + 1) === path + "/") ret = images[key];
@@ -328,7 +328,7 @@ class ImagesList extends React.Component {
 
         return ret;
     }
-    
+
     handleImageItemSelected(e) {
         let path = e.path;
         let images = this.state.images;
@@ -340,7 +340,7 @@ class ImagesList extends React.Component {
             else if(e.shiftKey) {
                 let to = this.getLastImageInFolder(path);
                 if(to) this.bulkSelectImages(to);
-                
+
                 to = this.getFirstImageInFolder(path);
                 if(to) {
                     this.bulkSelectImages(to);
@@ -373,7 +373,7 @@ class ImagesList extends React.Component {
         }
 
         this.setState({images: images});
-        
+
         this.emitSelectedChanges();
     }
 
@@ -383,19 +383,19 @@ class ImagesList extends React.Component {
         this.setState({images: this.state.images});
         this.emitSelectedChanges();
     }
-    
+
     emitSelectedChanges() {
         let selected = [];
 
         let images = this.state.images;
-        
+
         for(let key in images) {
             if(images[key].selected) selected.push(key);
         }
-        
+
         Observer.emit(GLOBAL_EVENT.IMAGES_LIST_SELECTED_CHANGED, selected);
     }
-    
+
     createImagesFolder(name="", path="") {
         return {
             isFolder: true,
@@ -427,7 +427,7 @@ class ImagesList extends React.Component {
                 let p = [];
                 if(root.path) p.unshift(root.path);
                 p.push(name);
-                
+
                 folder = this.createImagesFolder(name, p.join("/"));
                 root.items.push(folder);
             }
@@ -453,7 +453,7 @@ class ImagesList extends React.Component {
                 path: key,
                 name: name
             });
-            
+
             if(this.state.images[key].selected) folder.selected = true;
         }
 
@@ -462,9 +462,9 @@ class ImagesList extends React.Component {
 
     deleteSelectedImages() {
         let images = this.state.images;
-        
+
         let deletedCount = 0;
-        
+
         let keys = Object.keys(images);
         for(let key of keys) {
             if(images[key].selected) {
@@ -472,7 +472,7 @@ class ImagesList extends React.Component {
                 delete images[key];
             }
         }
-        
+
         if(deletedCount > 0) {
             images = this.sortImages(images);
 
@@ -488,7 +488,7 @@ class ImagesList extends React.Component {
                     {I18.f("ADD_IMAGES")}
                     <input type="file" ref="addImagesInput" multiple accept="image/png,image/jpg,image/jpeg,image/gif" onChange={this.addImages} />
                 </div>
-    
+
                 <div className="btn back-800 border-color-gray color-white file-upload" title={I18.f("ADD_ZIP_TITLE")}>
                     {I18.f("ADD_ZIP")}
                     <input type="file" ref="addZipInput" accept=".zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed" onChange={this.addZip} />
@@ -496,31 +496,31 @@ class ImagesList extends React.Component {
             </span>
         );
     }
-    
+
     renderElectronButtons() {
         return (
             <span>
                 <div className="btn back-800 border-color-gray color-white" onClick={this.addImagesFs} title={I18.f("ADD_IMAGES_TITLE")}>
                     {I18.f("ADD_IMAGES")}
                 </div>
-    
+
                 <div className="btn back-800 border-color-gray color-white" onClick={this.addFolderFs} title={I18.f("ADD_FOLDER_TITLE")}>
                     {I18.f("ADD_FOLDER")}
                 </div>
             </span>
         );
     }
-    
+
     render() {
         let data = this.getImagesTree(this.state.images);
-        
+
         let dropHelp = Object.keys(this.state.images).length > 0 ? null : (<div ref="dropHelp" className="image-drop-help">{I18.f("IMAGE_DROP_HELP")}</div>);
 
         return (
             <div className="images-list border-color-gray back-white">
-                
+
                 <div className="images-controllers border-color-gray">
-                    
+
                     {
                         PLATFORM === "web" ? (this.renderWebButtons()) : (this.renderElectronButtons())
                     }
@@ -531,16 +531,16 @@ class ImagesList extends React.Component {
                     <div className="btn back-800 border-color-gray color-white" onClick={this.clear} title={I18.f("CLEAR_TITLE")}>
                         {I18.f("CLEAR")}
                     </div>
-                    
+
                     <hr/>
 
                 </div>
-                
+
                 <div ref="imagesTree" className="images-tree">
                     <ImagesTree data={data} />
                     {dropHelp}
                 </div>
-                
+
             </div>
         );
     }

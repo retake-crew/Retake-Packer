@@ -22,7 +22,7 @@ class TextureView extends React.Component {
         if(view) {
             view.width = this.props.data.buffer.width;
             view.height = this.props.data.buffer.height;
-            
+
             view.style.width = Math.floor(view.width * this.props.scale) + "px";
             view.style.height = Math.floor(view.height * this.props.scale) + "px";
 
@@ -130,7 +130,7 @@ class TextureView extends React.Component {
                 ctrlKey: e.ctrlKey || e.shiftKey,
                 shiftKey: false
             });
-            
+
             this.selectCloned(selectedItem);
         }
 
@@ -138,7 +138,7 @@ class TextureView extends React.Component {
         e.stopPropagation();
         return false;
     }
-    
+
     selectCloned(selectedItem) {
         for (let item of this.props.data.data) {
             if(item.cloned && item.file === selectedItem.file) {
