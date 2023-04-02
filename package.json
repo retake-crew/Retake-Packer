@@ -1,6 +1,6 @@
 {
-  "name": "funkin-tex-packer",
-  "displayName": "Funkin Texture Packer",
+  "name": "funkin-packer",
+  "displayName": "Funkin Packer",
   "version": "0.0.1",
   "description": "Free online texture packer",
   "url": "http://free-tex-packer.com",

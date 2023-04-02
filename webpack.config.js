@@ -14,12 +14,14 @@ let devtool = 'eval-source-map';
 let output = 'static/js/index.js';
 let debug = true;
 
+var prod = true;
+
 var argv = {
     build: true
 }
 
 let PLATFORM = argv.platform || 'web';
-let mode = 'development';//argv.build ? 'production' : 'development';
+let mode = prod ? 'production' : 'development';//argv.build ? 'production' : 'development';
 
 let target = 'web';
 if (PLATFORM === 'electron') target = 'electron-renderer';
@@ -83,7 +85,7 @@ let config = {
         ]
     },
     optimization: {
-        //minimize: NODE_ENV == "production",
+        minimize: prod,
         usedExports: true,
     },
     plugins: plugins

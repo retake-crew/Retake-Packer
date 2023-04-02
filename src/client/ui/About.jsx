@@ -15,14 +15,14 @@ class About extends React.Component {
         Observer.emit(GLOBAL_EVENT.HIDE_ABOUT);
     }
 
-	renderDownload() {
+	/*renderDownload() {
 		return (
 			<tr>
                 <td><b>{I18.f("ABOUT_APPS")}</b></td>
 				<td><a href={appInfo.download} target="_blank" className="color-800">{appInfo.download}</a></td>
 			</tr>
 		)
-	}
+	}*/
 
 	renderWebVersion() {
 		return (
@@ -63,7 +63,7 @@ class About extends React.Component {
 									<td><a href={appInfo.bugs.url} target="_blank" className="color-800">{appInfo.bugs.url}</a></td>
 								</tr>
 
-								{PLATFORM === "web" ? this.renderDownload() : this.renderWebVersion()}
+								{/*PLATFORM === "web" ? this.renderDownload() : this.renderWebVersion()*/}
 
                                 <tr>
                                     <td><b>{I18.f("ABOUT_LIBS")}</b></td>
