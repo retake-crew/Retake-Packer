@@ -140,6 +140,34 @@ function startExporter(exporter, data, options) {
             appInfo: appInfo
         };
 
+        var sparrowFirstName = window.__sparrow_firstName;
+
+        if(sparrowFirstName != null) {
+            if(options.removeFileExtension) {
+                let parts = sparrowFirstName.split(".");
+                if(parts.length > 1) parts.pop();
+                sparrowFirstName = parts.join(".");
+            }
+
+            var array = [];
+            for(let rect of rects) {
+                if(rect.name == sparrowFirstName) {
+                    array.push(rect);
+                }
+            }
+            for(let rect of rects) {
+                if(rect.name != sparrowFirstName) {
+                    array.push(rect);
+                }
+            }
+
+            data = array;
+            rects = array;
+            renderOptions.rects = array;
+
+            //console.log(renderOptions, rects, sparrowFirstName, array);
+        }
+
         if(exporter.content) {
             finishExporter(exporter, renderOptions, resolve, reject);
             return;

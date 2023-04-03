@@ -41,12 +41,14 @@ class Sparrow extends Splitter {
 
                 let list = atlas.TextureAtlas.SubTexture;
 
-                var first = null;
+                var firstName = null;
 
                 for(let item of list) {
                     item = item['$'];
 
-                    if(first == null) first = item;
+                    var name = Splitter.fixFileName(item.name);
+
+                    if(firstName == null) firstName = name;
 
                     item.x = parseInt(item.x, 10);
                     item.y = parseInt(item.y, 10);
@@ -67,7 +69,7 @@ class Sparrow extends Splitter {
                     let trimmed = item.width < item.frameWidth || item.height < item.frameHeight;
 
                     res.push({
-                        name: Splitter.fixFileName(item.name),
+                        name: name,
                         frame: {
                             x: item.x,
                             y: item.y,
@@ -88,6 +90,8 @@ class Sparrow extends Splitter {
                         trimmed: trimmed
                     });
                 }
+
+                window.__sparrow_firstName = firstName;
 
                 cb(res);
             });
