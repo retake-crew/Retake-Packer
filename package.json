@@ -1,9 +1,9 @@
 {
   "name": "funkin-packer",
   "displayName": "Funkin Packer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Free online texture packer",
-  "url": "http://free-tex-packer.com",
+  "url": "https://neeeoo.github.io/funkin-packer/",
   "download": "http://free-tex-packer.com/download",
   "webApp": "http://free-tex-packer.com/app",
   "main": "src/index.js",
@@ -111,13 +111,15 @@
     "plist": "^3.0.1",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "webpack-dev-server": "^4.13.2",
-    "xml2js": "^0.4.19"
+    "timers": "^0.1.1",
+    "webpack-dev-server": "^4.13.2"
   },
   "dependencies": {
     "buffer": "^6.0.3",
+    "stream": "^0.0.2",
     "timers-browserify": "^2.0.12",
     "webpack": "^5.77.0",
-    "webpack-cli": "^5.0.1"
+    "webpack-cli": "^5.0.1",
+    "xml2js": "^0.4.23"
   }
 }

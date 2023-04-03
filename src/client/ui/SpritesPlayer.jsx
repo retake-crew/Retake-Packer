@@ -86,7 +86,7 @@ class SpritesPlayer extends React.Component {
 
     onSpeedChange(e)
     {
-        this.refs.fps.innerHTML = e.target.value + " fps";
+        this.refs.fps.textContent = e.target.value + " fps";
     }
 
     updateCurrentTextures() {
@@ -191,10 +191,10 @@ class SpritesPlayer extends React.Component {
                                     {I18.f("ANIMATION_SPEED")}
                                 </td>
                                 <td>
-                                    <input type="range" ref="speed" max="60" min="1" defaultValue="10" onChange={this.onSpeedChange}/>
+                                    <input type="range" ref="speed" max="60" min="1" defaultValue="24" onChange={this.onSpeedChange}/>
                                 </td>
                                 <td>
-                                    <div ref="fps" className="player-fps">10 fps</div>
+                                    <div ref="fps" className="player-fps">24 fps</div>
                                 </td>
                             </tr>
                             </tbody>

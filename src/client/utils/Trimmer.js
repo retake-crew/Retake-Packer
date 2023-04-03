@@ -22,7 +22,7 @@ class Trimmer {
             }
         }
 
-        return 0;
+        return width;
     }
 
     static getRightSpace(data, width, height, threshold=0) {
@@ -36,7 +36,7 @@ class Trimmer {
             }
         }
 
-        return 0;
+        return width;
     }
 
     static getTopSpace(data, width, height, threshold=0) {
@@ -50,7 +50,7 @@ class Trimmer {
             }
         }
 
-        return 0;
+        return height;
     }
 
     static getBottomSpace(data, width, height, threshold=0) {
@@ -64,7 +64,7 @@ class Trimmer {
             }
         }
 
-        return 0;
+        return height;
     }
 
     static trim(rects, threshold=0) {
@@ -85,6 +85,7 @@ class Trimmer {
             let spaces = {left: 0, right: 0, top: 0, bottom: 0};
 
             spaces.left = this.getLeftSpace(data, img.width, img.height, threshold);
+
             if(spaces.left !== img.width) { // was able to trim it
                 spaces.right = this.getRightSpace(data, img.width, img.height, threshold);
                 spaces.top = this.getTopSpace(data, img.width, img.height, threshold);
@@ -98,7 +99,7 @@ class Trimmer {
                     item.spriteSourceSize.h = img.height-spaces.top-spaces.bottom;
                 }
             }
-            else { // wasnt able to trim it
+            else { // wasnt able to trim it empty image
                 item.trimmed = true;
                 item.spriteSourceSize.x = 0;
                 item.spriteSourceSize.y = 0;

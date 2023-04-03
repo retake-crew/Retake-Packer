@@ -34,7 +34,7 @@ BASE64_EXPORT_TITLE;导出base64格式(如果支持)
 BASE64_EXPORT;导出base64
 TINIFY_TITLE;Tinify 用法 https://tinypng.com（压缩png）
 TINIFY;Tinify
-TINIFY_KEY_TITLE;TinyPNG key https://tinypng.com/developers 
+TINIFY_KEY_TITLE;TinyPNG key https://tinypng.com/developers
 TINIFY_KEY;TinyPNG key
 DISABLE_SMOOTHING;禁用平滑
 DISABLE_SMOOTHING_TITLE;禁用图像平滑
@@ -137,4 +137,5 @@ SELECT_TEXTURE;纹理图
 SELECT_DATA_FILE;数据文件
 SPLITTER;分割精灵表
 SPLITTER_ERROR_NO_FRAMES;精灵图没有找到，请检查文件格式是否正确。
-HOLD_TRIM;保持整齐(修剪):
+DISABLE_UNTRIM;保持整齐(修剪):
+REPACK;Repack

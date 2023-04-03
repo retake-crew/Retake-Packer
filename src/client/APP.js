@@ -26,6 +26,16 @@ class APP {
         Observer.on(GLOBAL_EVENT.PACK_EXPORTER_CHANGED, this.onPackExporterOptionsChanged, this);
         Observer.on(GLOBAL_EVENT.START_EXPORT, this.startExport, this);
 
+        Object.defineProperty(
+            HTMLImageElement.prototype,'toDataURL',
+            {enumerable:false,configurable:false,writable:false,value:function(m,q)
+            {
+                let c=document.createElement('canvas');
+                c.width=this.naturalWidth; c.height=this.naturalHeight;
+                c.getContext('2d').drawImage(this,0,0); return c.toDataURL(m,q);
+            }}
+        );
+
         // IDK WHERE TO PUT THIS
         setTimeout(function(){
             function formatBytes(bytes, decimals = 2, si=1024) {

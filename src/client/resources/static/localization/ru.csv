@@ -137,4 +137,5 @@ SELECT_TEXTURE;Текстура
 SELECT_DATA_FILE;Данные
 SPLITTER;Распаковка атласа
 SPLITTER_ERROR_NO_FRAMES;Не найдено ни одного спрайта. Возможно, формат атласа неверен.
-HOLD_TRIM;Обрезать:
+DISABLE_UNTRIM;Обрезать:
+REPACK;Repack

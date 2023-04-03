@@ -367,16 +367,6 @@ class PackProperties extends React.Component {
                                 <td><input ref="height" type="number" min="0" className="border-color-gray" defaultValue={this.packOptions.height} onBlur={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
                                 <td></td>
                             </tr>
-                            <tr title={I18.f("FIXED_SIZE_TITLE")}>
-                                <td>{I18.f("FIXED_SIZE")}</td>
-                                <td><input ref="fixedSize" type="checkbox" className="border-color-gray" onChange={this.onPropChanged} defaultChecked={this.packOptions.fixedSize ? "checked" : ""} /></td>
-                                <td></td>
-                            </tr>
-                            <tr title={I18.f("POWER_OF_TWO_TITLE")}>
-                                <td>{I18.f("POWER_OF_TWO")}</td>
-                                <td><input ref="powerOfTwo" type="checkbox" className="border-color-gray" onChange={this.onPropChanged} defaultChecked={this.packOptions.powerOfTwo ? "checked" : ""} /></td>
-                                <td></td>
-                            </tr>
                             <tr title={I18.f("PADDING_TITLE")}>
                                 <td>{I18.f("PADDING")}</td>
                                 <td><input ref="padding" type="number" className="border-color-gray" defaultValue={this.packOptions.padding} min="0" onInput={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
@@ -395,21 +385,6 @@ class PackProperties extends React.Component {
                             <tr title={I18.f("ALLOW_TRIM_TITLE")}>
                                 <td>{I18.f("ALLOW_TRIM")}</td>
                                 <td><input ref="allowTrim" type="checkbox" className="border-color-gray" onChange={this.onPropChanged} defaultChecked={allowTrim ? "checked" : ""}  disabled={exporterTrimDisabled} /></td>
-                                <td></td>
-                            </tr>
-                            <tr title={I18.f("TRIM_MODE_TITLE")}>
-                                <td>{I18.f("TRIM_MODE")}</td>
-                                <td>
-                                    <select ref="trimMode" className="border-color-gray" onChange={this.onPropChanged} defaultValue={this.packOptions.trimMode}  disabled={exporterTrimDisabled || !this.packOptions.allowTrim}>
-                                        <option value="trim">trim</option>
-                                        <option value="crop">crop</option>
-                                    </select>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <tr title={I18.f("ALPHA_THRESHOLD_TITLE")}>
-                                <td>{I18.f("ALPHA_THRESHOLD")}</td>
-                                <td><input ref="alphaThreshold" type="number" className="border-color-gray" defaultValue={this.packOptions.alphaThreshold} min="0" max="255" onBlur={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
                                 <td></td>
                             </tr>
                             <tr title={I18.f("DETECT_IDENTICAL_TITLE")}>
@@ -431,6 +406,36 @@ class PackProperties extends React.Component {
                             <tr title={I18.f("PACKER_METHOD_TITLE")}>
                                 <td>{I18.f("PACKER_METHOD")}</td>
                                 <td><PackerMethods ref="packerMethod" packer={this.state.packer} defaultMethod={this.packOptions.packerMethod} handler={this.onPropChanged}/></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colSpan="3" className="center-align">
+                                    Advanced
+                                </td>
+                            </tr>
+                            <tr title={I18.f("FIXED_SIZE_TITLE")}>
+                                <td>{I18.f("FIXED_SIZE")}</td>
+                                <td><input ref="fixedSize" type="checkbox" className="border-color-gray" onChange={this.onPropChanged} defaultChecked={this.packOptions.fixedSize ? "checked" : ""} /></td>
+                                <td></td>
+                            </tr>
+                            <tr title={I18.f("POWER_OF_TWO_TITLE")}>
+                                <td>{I18.f("POWER_OF_TWO")}</td>
+                                <td><input ref="powerOfTwo" type="checkbox" className="border-color-gray" onChange={this.onPropChanged} defaultChecked={this.packOptions.powerOfTwo ? "checked" : ""} /></td>
+                                <td></td>
+                            </tr>
+                            <tr title={I18.f("TRIM_MODE_TITLE")}>
+                                <td>{I18.f("TRIM_MODE")}</td>
+                                <td>
+                                    <select ref="trimMode" className="border-color-gray" onChange={this.onPropChanged} defaultValue={this.packOptions.trimMode}  disabled={exporterTrimDisabled || !this.packOptions.allowTrim}>
+                                        <option value="trim">trim</option>
+                                        <option value="crop">crop</option>
+                                    </select>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr title={I18.f("ALPHA_THRESHOLD_TITLE")}>
+                                <td>{I18.f("ALPHA_THRESHOLD")}</td>
+                                <td><input ref="alphaThreshold" type="number" className="border-color-gray" defaultValue={this.packOptions.alphaThreshold} min="0" max="255" onBlur={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
                                 <td></td>
                             </tr>
                         </tbody>

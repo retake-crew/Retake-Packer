@@ -135,6 +135,7 @@ CONTEXT_MENU_SELECT_ALL;Select all
 SPLIT;Split
 SELECT_TEXTURE;Texture
 SELECT_DATA_FILE;Data file
-SPLITTER;Split sheet
+SPLITTER;Repack / Split sheet
 SPLITTER_ERROR_NO_FRAMES;Sprites not found. Probably, atlas format is incorrect.
-HOLD_TRIM;Hold trim:
+DISABLE_UNTRIM;Disable Untrimming:
+REPACK;Repack

@@ -8,6 +8,7 @@ import {getDefaultSplitter} from '../splitters';
 import LocalImagesLoader from "../utils/LocalImagesLoader";
 import ReactDOM from "react-dom";
 import Downloader from "platform/Downloader";
+import ImagesList from "./ImagesList.jsx";
 
 class SheetSplitter extends React.Component {
     constructor(props) {
@@ -34,7 +35,8 @@ class SheetSplitter extends React.Component {
 
         this.buffer = document.createElement('canvas');
 
-        this.doSplit = this.doSplit.bind(this);
+        this.doExport = this.doExport.bind(this);
+        this.doRepack = this.doRepack.bind(this);
         this.selectTexture = this.selectTexture.bind(this);
         this.selectDataFile = this.selectDataFile.bind(this);
         this.updateFrames = this.updateFrames.bind(this);
@@ -76,7 +78,7 @@ class SheetSplitter extends React.Component {
         return false;
     }
 
-    doSplit() {
+    doRepack() {
         Observer.emit(GLOBAL_EVENT.SHOW_SHADER);
 
         if(!this.frames || !this.frames.length) {
@@ -89,13 +91,113 @@ class SheetSplitter extends React.Component {
         let ctx = this.buffer.getContext('2d');
         let files = [];
 
-        let holdTrim = ReactDOM.findDOMNode(this.refs.holdtrim).checked;
+        let disableuntrim = ReactDOM.findDOMNode(this.refs.disableuntrim).checked;
 
         for(let item of this.frames) {
-            let trimmed = item.trimmed ? holdTrim : false;
+            let trimmed = item.trimmed ? disableuntrim : false;
 
-            this.buffer.width = (holdTrim && trimmed) ? item.spriteSourceSize.w : item.sourceSize.w;
-            this.buffer.height = (holdTrim && trimmed) ? item.spriteSourceSize.h : item.sourceSize.h;
+            this.buffer.width = (disableuntrim && trimmed) ? item.spriteSourceSize.w : item.sourceSize.w;
+            this.buffer.height = (disableuntrim && trimmed) ? item.spriteSourceSize.h : item.sourceSize.h;
+
+            var isEmpty = this.buffer.width === 0 || this.buffer.height === 0;
+
+            if(isEmpty) {
+                //console.log(item);
+                this.buffer.width = 1;
+                this.buffer.height = 1;
+            }
+
+            ctx.clearRect(0, 0, this.buffer.width, this.buffer.height);
+
+            if(!isEmpty) {
+                if(item.rotated) {
+                    ctx.save();
+
+                    ctx.translate(item.spriteSourceSize.x + item.spriteSourceSize.w/2, item.spriteSourceSize.y + item.spriteSourceSize.h/2);
+                    ctx.rotate(this.state.splitter.inverseRotation ? Math.PI/2 : -Math.PI/2);
+
+                    let dx = trimmed ? item.spriteSourceSize.y - item.spriteSourceSize.h/2 : -item.spriteSourceSize.h/2;
+                    let dy = trimmed ? -(item.spriteSourceSize.x + item.spriteSourceSize.w/2) : -item.spriteSourceSize.w/2;
+
+                    ctx.drawImage(this.texture,
+                        item.frame.x, item.frame.y,
+                        item.frame.h, item.frame.w,
+                        dx, dy,
+                        item.spriteSourceSize.h, item.spriteSourceSize.w);
+
+                    ctx.restore();
+                }
+                else {
+
+                    let dx = trimmed ? 0 : item.spriteSourceSize.x;
+                    let dy = trimmed ? 0 : item.spriteSourceSize.y;
+
+                    ctx.drawImage(this.texture,
+                        item.frame.x, item.frame.y,
+                        item.frame.w, item.frame.h,
+                        dx, dy,
+                        item.spriteSourceSize.w, item.spriteSourceSize.h);
+                }
+            }
+
+            let ext = item.name.split('.').pop().toLowerCase();
+            if(!ext) {
+                ext = 'png';
+                item.name += '.' + ext;
+            }
+
+            let base64 = this.buffer.toDataURL(ext === 'png' ? 'image/png' : 'image/jpeg');
+            //base64 = base64.split(',').pop();
+
+            files.push({
+                name: item.name,
+                content: base64,
+                base64: base64
+            });
+        }
+
+        //console.log(ImagesList.i);
+        var images = [];
+
+        for(let file of files) {
+            var image = new Image();
+            image.src = file.base64;
+            image._base64 = file.base64;
+
+            images[file.name] = image;
+
+            //ImagesList.i.state.images[file.name] = image;
+        }
+
+        ImagesList.i.loadImagesComplete(images);
+
+        //Downloader.run(files, this.textureName + '.zip');
+
+        Observer.emit(GLOBAL_EVENT.HIDE_SHADER);
+        Observer.emit(GLOBAL_EVENT.HIDE_SHEET_SPLITTER); // Close the spritesheet splitter
+        Observer.emit(GLOBAL_EVENT.IMAGES_LIST_CHANGED, ImagesList.i.state.images);
+    }
+
+    doExport() {
+        Observer.emit(GLOBAL_EVENT.SHOW_SHADER);
+
+        if(!this.frames || !this.frames.length) {
+            Observer.emit(GLOBAL_EVENT.HIDE_SHADER);
+            Observer.emit(GLOBAL_EVENT.SHOW_MESSAGE, I18.f('SPLITTER_ERROR_NO_FRAMES'));
+
+            return;
+        }
+
+        let ctx = this.buffer.getContext('2d');
+        let files = [];
+
+        let disableuntrim = ReactDOM.findDOMNode(this.refs.disableuntrim).checked;
+
+        for(let item of this.frames) {
+            let trimmed = item.trimmed ? disableuntrim : false;
+
+            this.buffer.width = (disableuntrim && trimmed) ? item.spriteSourceSize.w : item.sourceSize.w;
+            this.buffer.height = (disableuntrim && trimmed) ? item.spriteSourceSize.h : item.sourceSize.h;
 
             ctx.clearRect(0, 0, this.buffer.width, this.buffer.height);
 
@@ -160,7 +262,7 @@ class SheetSplitter extends React.Component {
                 this.textureName = keys[0];
 
                 this.texture = data[this.textureName];
-                ReactDOM.findDOMNode(this.refs.textureName).innerHTML = this.textureName;
+                ReactDOM.findDOMNode(this.refs.textureName).textContent = this.textureName;
 
                 this.updateView();
 
@@ -204,7 +306,7 @@ class SheetSplitter extends React.Component {
                 this.data = content;
 
                 this.dataName = item.name;
-                ReactDOM.findDOMNode(this.refs.dataFileName).innerHTML = this.dataName;
+                ReactDOM.findDOMNode(this.refs.dataFileName).textContent = this.dataName;
 
                 getSplitterByData(this.data, (splitter) => {
                     this.setState({splitter: splitter});
@@ -367,9 +469,9 @@ class SheetSplitter extends React.Component {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>{I18.f('HOLD_TRIM')}</td>
+                                    <td>{I18.f('DISABLE_UNTRIM')}</td>
                                     <td>
-                                        <input ref="holdtrim" type="checkbox" className="border-color-gray"/>
+                                        <input ref="disableuntrim" type="checkbox" className="border-color-gray"/>
                                     </td>
                                 </tr>
                                 <tr style={{display: displayGridProperties}}>
@@ -417,7 +519,8 @@ class SheetSplitter extends React.Component {
                         </table>
 
                         <div>
-                            <div className="btn back-800 border-color-gray color-white" onClick={this.doSplit}>{I18.f("SPLIT")}</div>
+                            <div className="btn back-800 border-color-gray color-white" onClick={this.doRepack}>{I18.f("REPACK")}</div>
+                            <div className="btn back-800 border-color-gray color-white" onClick={this.doExport}>{I18.f("EXPORT")}</div>
                             <div className="btn back-800 border-color-gray color-white" onClick={this.close}>{I18.f("CLOSE")}</div>
                         </div>
                     </div>

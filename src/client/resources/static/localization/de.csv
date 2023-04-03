@@ -136,4 +136,5 @@ SELECT_TEXTURE;Textur
 SELECT_DATA_FILE;Daten-Datei
 SPLITTER;Sprites aus Bild extrahieren
 SPLITTER_ERROR_NO_FRAMES;Sprites wurden nicht gefunden. Vermutlich ist das Atlas Format falsch.
-HOLD_TRIM;Trim beibehalten:
+DISABLE_UNTRIM;Trim beibehalten:
+REPACK;Repack

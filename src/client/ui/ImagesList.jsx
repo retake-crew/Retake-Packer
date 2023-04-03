@@ -91,7 +91,9 @@ class ImagesList extends React.Component {
 
         if(e.dataTransfer.files.length) {
             let loader = new LocalImagesLoader();
-            loader.load(e.dataTransfer.files, null, data => this.loadImagesComplete(data));
+            loader.load(e.dataTransfer.files, null, data => {
+                return this.loadImagesComplete(data);
+            });
         }
 
         return false;
@@ -102,7 +104,9 @@ class ImagesList extends React.Component {
             Observer.emit(GLOBAL_EVENT.SHOW_SHADER);
 
             let loader = new LocalImagesLoader();
-            loader.load(e.target.files, null, data => this.loadImagesComplete(data));
+            loader.load(e.target.files, null, data => {
+                return this.loadImagesComplete(data);
+            });
         }
     }
 

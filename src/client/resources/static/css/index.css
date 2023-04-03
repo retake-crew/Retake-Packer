@@ -891,7 +891,7 @@ html, body {
 }
 
 .sheet-splitter-content {
-    width: 720px;
+    width: 740px;
     height: 530px;
     background: #fff;
     margin: auto;
@@ -955,7 +955,7 @@ html, body {
 
 .sheet-splitter-controls {
     float: right;
-    width: 195px;
+    width: 220px;
     height: 420px;
     padding-right: 10px;
 }

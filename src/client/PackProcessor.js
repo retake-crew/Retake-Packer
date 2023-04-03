@@ -36,11 +36,16 @@ class PackProcessor {
     static compareImages(rect1, rect2, didTrim) {
         //return rect1.image._base64 == rect2.image._base64;
         if(!didTrim) {
-            return rect1.image._base64 == rect2.image._base64;
+            if(rect1.image._base64 === rect2.image._base64) {
+                return true;
+            }
+            return rect1.image.src === rect2.image.src;
         }
 
         var i1 = rect1.trimmedImage;
         var i2 = rect2.trimmedImage;
+
+        //return i1 === i2;
 
         if(i1.length != i2.length) return false;
 
