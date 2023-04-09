@@ -48,13 +48,13 @@ class Sparrow extends Splitter {
 
                     var name = Splitter.fixFileName(item.name);
 
-                    if(firstName == null) firstName = name;
+                    if(firstName === null) firstName = name;
 
                     item.x = parseInt(item.x, 10);
                     item.y = parseInt(item.y, 10);
                     item.width = parseInt(item.width, 10);
                     item.height = parseInt(item.height, 10);
-                    if(item.frameX != null) {
+                    if(item.frameX !== null) {
                         item.frameX = -parseInt(item.frameX, 10);
                         item.frameY = -parseInt(item.frameY, 10);
                         item.frameWidth = parseInt(item.frameWidth, 10);

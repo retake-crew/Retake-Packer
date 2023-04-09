@@ -100,7 +100,7 @@ class PackProperties extends React.Component {
         let packer = getPackerByType(data.packer);
         let packerMethods = Object.keys(packer.methods);
         for(let method of packerMethods) {
-            if(method == data.packerMethod) {
+            if(method === data.packerMethod) {
                 methodValid = true;
                 break;
             }

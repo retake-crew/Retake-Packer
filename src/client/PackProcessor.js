@@ -9,14 +9,15 @@ import I18 from './utils/I18';
 class PackProcessor {
 
     static detectIdentical(rects, didTrim) {
-
         let identical = [];
 
-        for (let i = 0; i < rects.length; i++) {
+        const len = rects.length;
+
+        for (let i = 0; i < len; i++) {
             let rect1 = rects[i];
-            for (let n = i + 1; n < rects.length; n++) {
+            for (let n = i + 1; n < len; n++) {
                 let rect2 = rects[n];
-                if (PackProcessor.compareImages(rect1, rect2, didTrim) && identical.indexOf(rect2) < 0) {
+                if (identical.indexOf(rect2) === -1 && PackProcessor.compareImages(rect1, rect2, didTrim)) {
                     rect2.identical = rect1;
                     identical.push(rect2);
                 }
@@ -42,18 +43,35 @@ class PackProcessor {
             return rect1.image.src === rect2.image.src;
         }
 
+        /*if(rect1.image.cachedDetection !== undefined) {
+            if(rect1.image.cachedDetection[rect2.image]) {
+                return true;
+            }
+        } else {
+            rect1.image.cachedDetection = [];
+        }
+        if(rect2.image.cachedDetection !== undefined) {
+            if(rect2.image.cachedDetection[rect1.image]) {
+                return true;
+            }
+        } else {
+            rect2.image.cachedDetection = [];
+        }*/
+
         var i1 = rect1.trimmedImage;
         var i2 = rect2.trimmedImage;
 
         //return i1 === i2;
 
-        if(i1.length != i2.length) return false;
+        if(i1.length !== i2.length) return false;
 
         var length = i1.length;
 
         while(length--) {
-            if(i1[length] != i2[length]) return false;
+            if(i1[length] !== i2[length]) return false;
         }
+        //rect1.image.cachedDetection.push(rect2.image);
+        //rect2.image.cachedDetection.push(rect1.image);
         return true;
     }
 
@@ -223,9 +241,10 @@ class PackProcessor {
 
             // duplicate identical if more than 1 combo and fix references to point to the
             //  cloned rects since the array is mutated in applyIdentical()
+            // Optimize?
             let _identical = packerCombos.length > 1 ? identical.map(rect => {
                 for (let rect2 of _rects) {
-                    if (rect.identical.image._base64 == rect2.image._base64) {
+                    if (rect.identical.image._base64 === rect2.image._base64) {
                         return Object.assign({}, rect, { identical: rect2 });
                     }
                 }

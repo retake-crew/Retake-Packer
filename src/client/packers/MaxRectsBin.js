@@ -74,7 +74,7 @@ class MaxRectsBin extends Packer {
                 let score2 = {value:0};
                 let newNode = this._scoreRectangle(rectangles[i].frame.w, rectangles[i].frame.h, method, score1, score2);
 
-                if (score1.value < bestScore1 || (score1.value == bestScore1 && score2.value < bestScore2)) {
+                if (score1.value < bestScore1 || (score1.value === bestScore1 && score2.value < bestScore2)) {
                     bestScore1 = score1.value;
                     bestScore2 = score2.value;
                     bestNode = newNode;
@@ -82,7 +82,7 @@ class MaxRectsBin extends Packer {
                 }
             }
 
-            if (bestRectangleIndex == -1) {
+            if (bestRectangleIndex === -1) {
                 return res;
             }
 
@@ -91,7 +91,7 @@ class MaxRectsBin extends Packer {
             rect.frame.x = bestNode.x;
             rect.frame.y = bestNode.y;
 
-            if(rect.frame.w != bestNode.width || rect.frame.h != bestNode.height) {
+            if(rect.frame.w !== bestNode.width || rect.frame.h !== bestNode.height) {
                 rect.rotated = true;
             }
 
@@ -166,7 +166,7 @@ class MaxRectsBin extends Packer {
             rect = freeRectangles[i];
             if (rect.width >= width && rect.height >= height) {
                 topSideY = rect.y + height;
-                if (topSideY < bestY.value || (topSideY == bestY.value && rect.x < bestX.value)) {
+                if (topSideY < bestY.value || (topSideY === bestY.value && rect.x < bestX.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = width;
@@ -177,7 +177,7 @@ class MaxRectsBin extends Packer {
             }
             if (this.allowRotate && rect.width >= height && rect.height >= width) {
                 topSideY = rect.y + width;
-                if (topSideY < bestY.value || (topSideY == bestY.value && rect.x < bestX.value)) {
+                if (topSideY < bestY.value || (topSideY === bestY.value && rect.x < bestX.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = height;
@@ -210,7 +210,7 @@ class MaxRectsBin extends Packer {
                 shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                 longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
-                if (shortSideFit < bestShortSideFit.value || (shortSideFit == bestShortSideFit.value && longSideFit < bestLongSideFit.value)) {
+                if (shortSideFit < bestShortSideFit.value || (shortSideFit === bestShortSideFit.value && longSideFit < bestLongSideFit.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = width;
@@ -231,7 +231,7 @@ class MaxRectsBin extends Packer {
                 flippedShortSideFit = Math.min(flippedLeftoverHoriz, flippedLeftoverVert);
                 flippedLongSideFit = Math.max(flippedLeftoverHoriz, flippedLeftoverVert);
 
-                if (flippedShortSideFit < bestShortSideFit.value || (flippedShortSideFit == bestShortSideFit.value && flippedLongSideFit < bestLongSideFit.value)) {
+                if (flippedShortSideFit < bestShortSideFit.value || (flippedShortSideFit === bestShortSideFit.value && flippedLongSideFit < bestLongSideFit.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = height;
@@ -265,7 +265,7 @@ class MaxRectsBin extends Packer {
                 shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                 longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
-                if (longSideFit < bestLongSideFit.value || (longSideFit == bestLongSideFit.value && shortSideFit < bestShortSideFit.value)) {
+                if (longSideFit < bestLongSideFit.value || (longSideFit === bestLongSideFit.value && shortSideFit < bestShortSideFit.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = width;
@@ -281,7 +281,7 @@ class MaxRectsBin extends Packer {
                 shortSideFit = Math.min(leftoverHoriz, leftoverVert);
                 longSideFit = Math.max(leftoverHoriz, leftoverVert);
 
-                if (longSideFit < bestLongSideFit.value || (longSideFit == bestLongSideFit.value && shortSideFit < bestShortSideFit.value)) {
+                if (longSideFit < bestLongSideFit.value || (longSideFit === bestLongSideFit.value && shortSideFit < bestShortSideFit.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = height;
@@ -315,7 +315,7 @@ class MaxRectsBin extends Packer {
                 leftoverVert = Math.abs(rect.height - height);
                 shortSideFit = Math.min(leftoverHoriz, leftoverVert);
 
-                if (areaFit < bestAreaFit.value || (areaFit == bestAreaFit.value && shortSideFit < bestShortSideFit.value)) {
+                if (areaFit < bestAreaFit.value || (areaFit === bestAreaFit.value && shortSideFit < bestShortSideFit.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = width;
@@ -330,7 +330,7 @@ class MaxRectsBin extends Packer {
                 leftoverVert = Math.abs(rect.height - width);
                 shortSideFit = Math.min(leftoverHoriz, leftoverVert);
 
-                if (areaFit < bestAreaFit.value || (areaFit == bestAreaFit.value && shortSideFit < bestShortSideFit.value)) {
+                if (areaFit < bestAreaFit.value || (areaFit === bestAreaFit.value && shortSideFit < bestShortSideFit.value)) {
                     bestNode.x = rect.x;
                     bestNode.y = rect.y;
                     bestNode.width = height;
@@ -354,16 +354,16 @@ class MaxRectsBin extends Packer {
         let usedRectangles = this.usedRectangles;
         let score = 0;
 
-        if (x == 0 || x + width === this.binWidth)
+        if (x === 0 || x + width === this.binWidth)
             score += height;
-        if (y == 0 || y + height === this.binHeight)
+        if (y === 0 || y + height === this.binHeight)
             score += width;
         let rect;
         for(let i= 0; i < usedRectangles.length; i++) {
             rect = usedRectangles[i];
-            if (rect.x == x + width || rect.x + rect.width == x)
+            if (rect.x === x + width || rect.x + rect.width === x)
                 score += this._commonIntervalLength(rect.y, rect.y + rect.height, y, y + height);
-            if (rect.y == y + height || rect.y + rect.height == y)
+            if (rect.y === y + height || rect.y + rect.height === y)
                 score += this._commonIntervalLength(rect.x, rect.x + rect.width, x, x + width);
         }
         return score;
