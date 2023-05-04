@@ -9,6 +9,7 @@ import LocalImagesLoader from "../utils/LocalImagesLoader";
 import ReactDOM from "react-dom";
 import Downloader from "platform/Downloader";
 import ImagesList from "./ImagesList.jsx";
+import { cleanPrefix } from '../utils/common';
 
 class SheetSplitter extends React.Component {
     constructor(props) {
@@ -96,8 +97,20 @@ class SheetSplitter extends React.Component {
         for(let item of this.frames) {
             let trimmed = item.trimmed ? disableuntrim : false;
 
-            this.buffer.width = (disableuntrim && trimmed) ? item.spriteSourceSize.w : item.sourceSize.w;
-            this.buffer.height = (disableuntrim && trimmed) ? item.spriteSourceSize.h : item.sourceSize.h;
+            var prefix = cleanPrefix(item.originalFile || item.file || item.name);
+
+            var ssw = item.sourceSize.w;
+            var ssh = item.sourceSize.h;
+
+            if(window.sparrowMaxMap.hasOwnProperty(prefix)) {
+                var maxMap = window.sparrowMaxMap[prefix];
+
+                ssw = maxMap.mw;
+                ssh = maxMap.mh;
+            }
+
+            this.buffer.width = (disableuntrim && trimmed) ? item.spriteSourceSize.w : ssw;
+            this.buffer.height = (disableuntrim && trimmed) ? item.spriteSourceSize.h : ssh;
 
             var isEmpty = this.buffer.width === 0 || this.buffer.height === 0;
 
@@ -126,9 +139,7 @@ class SheetSplitter extends React.Component {
                         item.spriteSourceSize.h, item.spriteSourceSize.w);
 
                     ctx.restore();
-                }
-                else {
-
+                } else {
                     let dx = trimmed ? 0 : item.spriteSourceSize.x;
                     let dy = trimmed ? 0 : item.spriteSourceSize.y;
 
@@ -196,8 +207,20 @@ class SheetSplitter extends React.Component {
         for(let item of this.frames) {
             let trimmed = item.trimmed ? disableuntrim : false;
 
-            this.buffer.width = (disableuntrim && trimmed) ? item.spriteSourceSize.w : item.sourceSize.w;
-            this.buffer.height = (disableuntrim && trimmed) ? item.spriteSourceSize.h : item.sourceSize.h;
+            var prefix = cleanPrefix(item.originalFile || item.file || item.name);
+
+            var ssw = item.sourceSize.w;
+            var ssh = item.sourceSize.h;
+
+            if(window.sparrowMaxMap.hasOwnProperty(prefix)) {
+                var maxMap = window.sparrowMaxMap[prefix];
+
+                ssw = maxMap.mw;
+                ssh = maxMap.mh;
+            }
+
+            this.buffer.width = (disableuntrim && trimmed) ? item.spriteSourceSize.w : ssw;
+            this.buffer.height = (disableuntrim && trimmed) ? item.spriteSourceSize.h : ssh;
 
             ctx.clearRect(0, 0, this.buffer.width, this.buffer.height);
 

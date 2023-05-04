@@ -173,7 +173,7 @@ function startExporter(exporter, data, options) {
                         // sorry for this horrendus code
                         array[i] = JSON.parse(JSON.stringify(array[i]));
 
-                        console.log(orig);
+                        //console.log(orig);
 
                         array[i].sourceSize.w = orig.frameWidth;
                         array[i].sourceSize.h = orig.frameHeight;

@@ -118,9 +118,9 @@ class Sparrow extends Splitter {
                         trimmed: trimmed
                     });
 
-                    if(item.name.startsWith("up0")) {
-                        console.log(res[res.length-1]);
-                    }
+                    //if(item.name.startsWith("up0")) {
+                    //    console.log(res[res.length-1]);
+                    //}
                 }
 
                 var maxSizes = {};
@@ -148,7 +148,7 @@ class Sparrow extends Splitter {
 
                 window.sparrowMaxMap = maxSizes;
 
-                console.log(maxSizes);
+                //console.log(maxSizes);
 
                 window.__sparrow_firstName = firstName;
 

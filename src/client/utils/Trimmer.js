@@ -105,8 +105,11 @@ class Trimmer {
                     item.trimmed = true;
                     item.spriteSourceSize.x = spaces.left;
                     item.spriteSourceSize.y = spaces.top;
+                    //item.spriteSourceSize.w = img.width-spaces.right;
+                    //item.spriteSourceSize.h = img.height-spaces.bottom;
                     item.spriteSourceSize.w = img.width-spaces.left-spaces.right;
                     item.spriteSourceSize.h = img.height-spaces.top-spaces.bottom;
+                    //console.log(item.name, spaces);
                 }
             } else { // wasnt able to trim it empty image
                 item.trimmed = true;

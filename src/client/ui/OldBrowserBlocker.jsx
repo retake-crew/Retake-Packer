@@ -53,7 +53,7 @@ class OldBrowserBlocker extends React.Component {
             );
         }
         else {
-            return (<span> </span>);
+            return (<> </>);
         }
     }
 }
