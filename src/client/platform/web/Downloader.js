@@ -7,6 +7,12 @@ class Downloader {
 
         let zip = new JSZip();
 
+        // Fix timezone issue
+        const currDate = new Date();
+        const dateWithOffset = new Date(currDate.getTime() - currDate.getTimezoneOffset() * 60000);
+        // replace the default date with dateWithOffset
+        JSZip.defaults.date = dateWithOffset;
+
         for(let file of files) {
             zip.file(file.name, file.content, {base64: !!file.base64});
         }

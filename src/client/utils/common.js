@@ -28,6 +28,33 @@ function smartSortImages(f1, f2) {
     return f1 > f2 ? 1 : -1;
 }
 
+function cleanPrefix(str) {
+    let parts = str.split(".");
+    if(parts.length > 1) parts.pop();
+    str = parts.join(".");
+
+    var lastDigit = "";
+    var c = "";
+    do {
+        c = str[str.length-1];
+        if(c >= '0' && c <= '9') {
+            str = str.slice(0, str.length - 1);
+            lastDigit = c;
+        }
+    } while(c >= '0' && c <= '9');
+
+    return str + lastDigit;
+}
+
+function clearGlobals() {
+    window.atlas = undefined;
+    window.__sparrow_firstName = undefined;
+    window.sparrowOrigMap = undefined;
+    window.sparrowMaxMap = undefined;
+}
+
 module.exports = {
-    smartSortImages: smartSortImages
+    smartSortImages: smartSortImages,
+    cleanPrefix: cleanPrefix,
+    clearGlobals: clearGlobals
 };

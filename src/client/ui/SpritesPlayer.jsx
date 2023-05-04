@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import I18 from '../utils/I18';
 import {GLOBAL_EVENT, Observer} from "../Observer";
-import {smartSortImages} from '../utils/common';
+import {cleanPrefix, smartSortImages} from '../utils/common';
 
 class SpritesPlayer extends React.Component {
 
@@ -58,9 +58,22 @@ class SpritesPlayer extends React.Component {
             let baseTexture = part.buffer;
 
             for (let config of part.data) {
+                var w = config.sourceSize.w;
+                var h = config.sourceSize.h;
 
-                if (this.width < config.sourceSize.w) this.width = config.sourceSize.w;
-                if (this.height < config.sourceSize.h) this.height = config.sourceSize.h;
+                var prefix = cleanPrefix(config.originalFile || config.file || config.name);
+
+                if(window.sparrowMaxMap.hasOwnProperty(prefix)) {
+                    var maxMap = window.sparrowMaxMap[prefix];
+
+                    w = maxMap.mw;
+                    h = maxMap.mh;
+                }
+
+                //console.log(w, h, config, config.sourceSize);
+
+                if (this.width < w) this.width = w;
+                if (this.height < h) this.height = h;
 
                 this.textures.push({
                     config: config,
@@ -133,12 +146,24 @@ class SpritesPlayer extends React.Component {
         let texture = this.currentTextures[this.currentFrame];
         if(!texture) return;
 
+        var w = texture.config.sourceSize.w;
+        var h = texture.config.sourceSize.h;
+
+        var prefix = cleanPrefix(texture.config.originalFile || texture.config.file || texture.config.name);
+
+        if(window.sparrowMaxMap.hasOwnProperty(prefix)) {
+            var maxMap = window.sparrowMaxMap[prefix];
+
+            w = maxMap.mw;
+            h = maxMap.mh;
+        }
+
         let buffer = ReactDOM.findDOMNode(this.refs.buffer);
-        buffer.width = texture.config.sourceSize.w;
-        buffer.height = texture.config.sourceSize.h;
+        buffer.width = w;
+        buffer.height = h;
 
         let bufferCtx = buffer.getContext("2d");
-        bufferCtx.clearRect(0, 0, texture.config.sourceSize.w, texture.config.sourceSize.h);
+        bufferCtx.clearRect(0, 0, w, h);
 
         let x = this.width/2, y = this.height/2;
 
@@ -166,9 +191,9 @@ class SpritesPlayer extends React.Component {
 
         ctx.drawImage(buffer,
             0, 0,
-            texture.config.sourceSize.w, texture.config.sourceSize.h,
-            x - texture.config.sourceSize.w/2, y - texture.config.sourceSize.h/2,
-            texture.config.sourceSize.w, texture.config.sourceSize.h);
+            w, h,
+            x - w/2, y - h/2,
+            w, h);
     }
 
     stop() {
@@ -199,7 +224,6 @@ class SpritesPlayer extends React.Component {
                             </tr>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>

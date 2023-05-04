@@ -10,7 +10,7 @@ import ImagesTree from './ImagesTree.jsx';
 
 import FileSystem from 'platform/FileSystem';
 
-import {smartSortImages} from '../utils/common';
+import {clearGlobals, smartSortImages} from '../utils/common';
 
 let INSTANCE = null;
 
@@ -229,6 +229,7 @@ class ImagesList extends React.Component {
     doClear() {
         Observer.emit(GLOBAL_EVENT.IMAGES_LIST_CHANGED, {});
         Observer.emit(GLOBAL_EVENT.IMAGES_LIST_SELECTED_CHANGED, []);
+        clearGlobals();
         this.setState({images: {}});
     }
 

@@ -34,7 +34,7 @@ BASE64_EXPORT_TITLE;Exporta a formato base64 (si es posible)
 BASE64_EXPORT;Exporta a base64
 TINIFY_TITLE;Tinify usando https://tinypng.com
 TINIFY;Tinify
-TINIFY_KEY_TITLE;TinyPNG key https://tinypng.com/developers 
+TINIFY_KEY_TITLE;TinyPNG key https://tinypng.com/developers
 TINIFY_KEY;TinyPNG key
 DISABLE_SMOOTHING;Deshabilitar suavizado
 DISABLE_SMOOTHING_TITLE;Deshabilitar suavizado de imagen
@@ -54,7 +54,7 @@ HEIGHT;Alto:
 HEIGHT_TITLE;Máximo alto de textura
 FIXED_SIZE;Tamaño fijo:
 POWER_OF_TWO;Potencia de dos:
-POWER_OF_TWO_TITLE;Tamaño de textura en potencia de dos 
+POWER_OF_TWO_TITLE;Tamaño de textura en potencia de dos
 FIXED_SIZE_TITLE;Tamaño de textura fija
 PADDING;Separación:
 PADDING_TITLE;Separación entre sprites

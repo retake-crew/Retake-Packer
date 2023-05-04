@@ -1,9 +1,15 @@
+import { cleanPrefix } from '../utils/common';
 import Splitter from './Splitter';
 
 import xmlParser from 'xml2js';
 
 class Sparrow extends Splitter {
     static check(data, cb) {
+        if(data == null) {
+            cb(false);
+            return;
+        }
+
         try {
             if(data.startsWith("ï»¿")) data = data.slice(3);
 
@@ -28,6 +34,11 @@ class Sparrow extends Splitter {
     static split(data, options, cb) {
         let res = [];
 
+        if(data == null) {
+            cb(false);
+            return;
+        }
+
         try {
             if(data.startsWith("ï»¿")) data = data.slice(3);
 
@@ -38,6 +49,7 @@ class Sparrow extends Splitter {
                 }
 
                 window.atlas = atlas;
+                window.sparrowOrigMap = {};
 
                 let list = atlas.TextureAtlas.SubTexture;
 
@@ -54,7 +66,7 @@ class Sparrow extends Splitter {
                     item.y = parseInt(item.y, 10);
                     item.width = parseInt(item.width, 10);
                     item.height = parseInt(item.height, 10);
-                    if(item.frameX !== null) {
+                    if(item.frameX != null) {
                         item.frameX = -parseInt(item.frameX, 10);
                         item.frameY = -parseInt(item.frameY, 10);
                         item.frameWidth = parseInt(item.frameWidth, 10);
@@ -66,7 +78,22 @@ class Sparrow extends Splitter {
                         item.frameHeight = item.height;
                     }
 
+                    var orig = {};
+                    orig.x = item.x;
+                    orig.y = item.y;
+                    orig.width = item.width;
+                    orig.height = item.height;
+                    orig.frameX = item.frameX;
+                    orig.frameY = item.frameY;
+                    orig.frameWidth = item.frameWidth;
+                    orig.frameHeight = item.frameHeight;
+
+                    window.sparrowOrigMap[item.name] = orig;
+
                     let trimmed = item.width < item.frameWidth || item.height < item.frameHeight;
+
+                    item.frameWidth = Math.max(item.frameWidth, item.width + item.frameX);
+                    item.frameHeight = Math.max(item.frameHeight, item.height + item.frameY);
 
                     res.push({
                         name: name,
@@ -86,10 +113,42 @@ class Sparrow extends Splitter {
                             w: item.frameWidth,
                             h: item.frameHeight
                         },
+                        orig: orig,
                         rotated: item.rotated === 'true',
                         trimmed: trimmed
                     });
+
+                    if(item.name.startsWith("up0")) {
+                        console.log(res[res.length-1]);
+                    }
                 }
+
+                var maxSizes = {};
+
+                for(let item of res) {
+                    var prefix = cleanPrefix(item.name);
+
+                    if(maxSizes[prefix] == null) {
+                        maxSizes[prefix] = {
+                            mw: -Infinity,
+                            mh: -Infinity,
+                        };
+                    }
+
+                    maxSizes[prefix].mw = Math.max(item.sourceSize.w, maxSizes[prefix].mw);
+                    maxSizes[prefix].mh = Math.max(item.sourceSize.h, maxSizes[prefix].mh);
+                }
+
+                for(let item of res) {
+                    var prefix = cleanPrefix(item.name);
+
+                    item.sourceSize.mw = maxSizes[prefix].mw;
+                    item.sourceSize.mh = maxSizes[prefix].mh;
+                }
+
+                window.sparrowMaxMap = maxSizes;
+
+                console.log(maxSizes);
 
                 window.__sparrow_firstName = firstName;
 

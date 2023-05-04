@@ -66,6 +66,7 @@ function prepareData(data, options) {
     for(let item of data) {
 
         let name = item.originalFile || item.file;
+        var origName = name;
 
         if(options.trimSpriteNames) {
             name.trim();
@@ -95,7 +96,7 @@ function prepareData(data, options) {
             sourceSize.h = spriteSourceSize.h;
         }
 
-        if(opt.scale !== 1) {
+        if(opt.scale !== 1) { // Maybe round if sparrow?
             frame.x *= opt.scale;
             frame.y *= opt.scale;
             frame.w *= opt.scale;
@@ -114,6 +115,7 @@ function prepareData(data, options) {
 
         ret.push({
             name: name,
+            origName: origName,
             frame: frame,
             spriteSourceSize: spriteSourceSize,
             sourceSize: sourceSize,
@@ -158,6 +160,24 @@ function startExporter(exporter, data, options) {
             for(let rect of rects) {
                 if(rect.name != sparrowFirstName) {
                     array.push(rect);
+                }
+            }
+
+            if(window.sparrowOrigMap != null) {
+                for(var i = 0; i < array.length; i++) {
+                    if(!window.sparrowOrigMap.hasOwnProperty(array[i].name)) {
+                        continue;
+                    }
+                    var orig = window.sparrowOrigMap[array[i].name];
+                    if(orig != null) {
+                        // sorry for this horrendus code
+                        array[i] = JSON.parse(JSON.stringify(array[i]));
+
+                        console.log(orig);
+
+                        array[i].sourceSize.w = orig.frameWidth;
+                        array[i].sourceSize.h = orig.frameHeight;
+                    }
                 }
             }
 
