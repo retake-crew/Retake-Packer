@@ -34,7 +34,7 @@ BASE64_EXPORT_TITLE;Экспортировать в формате base64 (пр�
 BASE64_EXPORT;Экспортировать в base64
 TINIFY_TITLE;Оптимизировать, используя TinyPNG https://tinypng.com
 TINIFY;Оптимизировать TinyPNG
-TINIFY_KEY_TITLE;Ключ TinyPNG https://tinypng.com/developers 
+TINIFY_KEY_TITLE;Ключ TinyPNG https://tinypng.com/developers
 TINIFY_KEY;Ключ TinyPNG
 DISABLE_SMOOTHING;Отключить сглаживание
 DISABLE_SMOOTHING_TITLE;Отключить сглаживание изображения

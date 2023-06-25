@@ -54,6 +54,10 @@ class SpritesPlayer extends React.Component {
         this.width = 0;
         this.height = 0;
 
+        if(window.sparrowMaxMap == undefined) {
+            window.sparrowMaxMap = {};
+        }
+
         for(let part of this.props.data) {
             let baseTexture = part.buffer;
 
@@ -150,6 +154,10 @@ class SpritesPlayer extends React.Component {
         var h = texture.config.sourceSize.h;
 
         var prefix = cleanPrefix(texture.config.originalFile || texture.config.file || texture.config.name);
+
+        if(window.sparrowMaxMap == undefined) {
+            window.sparrowMaxMap = {};
+        }
 
         if(window.sparrowMaxMap.hasOwnProperty(prefix)) {
             var maxMap = window.sparrowMaxMap[prefix];

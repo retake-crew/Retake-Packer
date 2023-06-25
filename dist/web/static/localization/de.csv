@@ -37,7 +37,7 @@ BASE64_EXPORT_TITLE;Export im base64-Format (Wenn möglich)
 TINIFY;Tinify
 TINIFY_TITLE;Tinify mithilfe von https://tinypng.com
 TINIFY_KEY;TinyPNG Schlüssel
-TINIFY_KEY_TITLE;TinyPNG Schlüssel https://tinypng.com/developers 
+TINIFY_KEY_TITLE;TinyPNG Schlüssel https://tinypng.com/developers
 SCALE_TITLE;Basistextur Skalierung
 FILTER;Filter:
 FILTER_TITLE;Filter für die Ausgabedatei

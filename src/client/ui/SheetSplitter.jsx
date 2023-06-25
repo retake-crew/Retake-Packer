@@ -94,6 +94,10 @@ class SheetSplitter extends React.Component {
 
         let disableuntrim = ReactDOM.findDOMNode(this.refs.disableuntrim).checked;
 
+        if(window.sparrowMaxMap == undefined) {
+            window.sparrowMaxMap = {};
+        }
+
         for(let item of this.frames) {
             let trimmed = item.trimmed ? disableuntrim : false;
 
@@ -203,6 +207,10 @@ class SheetSplitter extends React.Component {
         let files = [];
 
         let disableuntrim = ReactDOM.findDOMNode(this.refs.disableuntrim).checked;
+
+        if(window.sparrowMaxMap == undefined) {
+            window.sparrowMaxMap = {};
+        }
 
         for(let item of this.frames) {
             let trimmed = item.trimmed ? disableuntrim : false;
