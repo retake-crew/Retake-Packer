@@ -90,6 +90,8 @@ class PackProcessor {
                 clone.image = item.image;
                 clone.originalFile = item.file;
                 clone.frame = Object.assign({}, item.frame);
+                clone.frame.x = rect.frame.x;
+                clone.frame.y = rect.frame.y;
                 clone.sourceSize = Object.assign({}, item.sourceSize);
                 clone.spriteSourceSize = Object.assign({}, item.spriteSourceSize);
                 clone.skipRender = true;
