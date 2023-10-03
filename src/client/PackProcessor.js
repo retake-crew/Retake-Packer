@@ -89,6 +89,9 @@ class PackProcessor {
                 clone.name = item.name;
                 clone.image = item.image;
                 clone.originalFile = item.file;
+                clone.frame = Object.assign({}, item.frame);
+                clone.sourceSize = Object.assign({}, item.sourceSize);
+                clone.spriteSourceSize = Object.assign({}, item.spriteSourceSize);
                 clone.skipRender = true;
 
                 removeIdentical.push(item);
@@ -112,8 +115,8 @@ class PackProcessor {
         //debugger;
         let rects = [];
 
-        let padding = options.padding || 0;
-        let extrude = options.extrude || 0;
+        let spritePadding = options.spritePadding || 0;
+        let borderPadding = options.borderPadding || 0;
 
         let maxWidth = 0, maxHeight = 0;
         let minWidth = 0, minHeight = 0;
@@ -131,8 +134,9 @@ class PackProcessor {
             maxWidth += img.width;
             maxHeight += img.height;
 
-            if (img.width > minWidth) minWidth = img.width + padding * 2;// + extrude * 2;
-            if (img.height > minHeight) minHeight = img.height + padding * 2;// + extrude * 2;
+            // This is probably wrong
+            if (img.width > minWidth) minWidth = img.width + spritePadding * 2;// + borderPadding * 2;
+            if (img.height > minHeight) minHeight = img.height + spritePadding * 2;// + borderPadding * 2;
 
             rects.push({
                 frame: { x: 0, y: 0, w: img.width, h: img.height },
@@ -146,8 +150,8 @@ class PackProcessor {
             });
         }
 
-        minWidth += extrude * 2;
-        minHeight += extrude * 2;
+        minWidth += borderPadding * 2;
+        minHeight += borderPadding * 2;
 
         let width = options.width || 0;
         let height = options.height || 0;
@@ -178,15 +182,6 @@ class PackProcessor {
 
         if (options.allowTrim) {
             Trimmer.trim(rects, alphaThreshold);
-        }
-
-        // TODO: make extrude work like border padding
-
-        for (let item of rects) {
-            //item.frame.x += extrude;
-            //item.frame.y += extrude;
-            item.frame.w += padding * 2 + extrude * 2;
-            item.frame.h += padding * 2 + extrude * 2;
         }
 
         let identical = [];
@@ -251,15 +246,8 @@ class PackProcessor {
             }) : identical;
 
             while (_rects.length) {
-                let packer = new combo.packerClass(width, height, combo.allowRotation);
+                let packer = new combo.packerClass(width, height, combo.allowRotation, spritePadding);
                 let result = packer.pack(_rects, combo.packerMethod);
-
-                for (let item of result) {
-                    item.frame.x += padding + extrude;
-                    item.frame.y += padding + extrude;
-                    item.frame.w -= padding * 2 + extrude * 2;
-                    item.frame.h -= padding * 2 + extrude * 2;
-                }
 
                 if (options.detectIdentical) {
                     result = PackProcessor.applyIdentical(result, _identical);
@@ -283,6 +271,13 @@ class PackProcessor {
                 optimalRes = res;
                 optimalSheets = sheets;
                 optimalEfficiency = efficiency;
+            }
+        }
+
+        for (let sheet of optimalRes) {
+            for(let item of sheet) {
+                item.frame.x += borderPadding;
+                item.frame.y += borderPadding;
             }
         }
 

@@ -87,8 +87,8 @@ class PackProperties extends React.Component {
         data.height = data.height === undefined ? 8192 : data.height;
         data.fixedSize = data.fixedSize === undefined ? false : data.fixedSize;
         data.powerOfTwo = data.powerOfTwo === undefined ? false : data.powerOfTwo;
-        data.padding = data.padding === undefined ? 3 : data.padding;
-        data.extrude = data.extrude === undefined ? 0 : data.extrude;
+        data.spritePadding = data.spritePadding === undefined ? 3 : data.spritePadding;
+        data.borderPadding = data.borderPadding === undefined ? 1 : data.borderPadding;
         data.allowRotation = data.allowRotation === undefined ? false : data.allowRotation;
         data.allowTrim = data.allowTrim === undefined ? true : data.allowTrim;
         data.trimMode = data.trimMode === undefined ? "trim" : data.trimMode;
@@ -141,8 +141,8 @@ class PackProperties extends React.Component {
         data.height = Number(ReactDOM.findDOMNode(this.refs.height).value) || 0;
         data.fixedSize = ReactDOM.findDOMNode(this.refs.fixedSize).checked;
         data.powerOfTwo = ReactDOM.findDOMNode(this.refs.powerOfTwo).checked;
-        data.padding = Number(ReactDOM.findDOMNode(this.refs.padding).value) || 0;
-        data.extrude = Number(ReactDOM.findDOMNode(this.refs.extrude).value) || 0;
+        data.spritePadding = Number(ReactDOM.findDOMNode(this.refs.spritePadding).value) || 0;
+        data.borderPadding = Number(ReactDOM.findDOMNode(this.refs.borderPadding).value) || 0;
         data.allowRotation = ReactDOM.findDOMNode(this.refs.allowRotation).checked;
         data.allowTrim = ReactDOM.findDOMNode(this.refs.allowTrim).checked;
         data.trimMode = ReactDOM.findDOMNode(this.refs.trimMode).value;
@@ -171,8 +171,8 @@ class PackProperties extends React.Component {
         ReactDOM.findDOMNode(this.refs.height).value = Number(this.packOptions.height) || 0;
         ReactDOM.findDOMNode(this.refs.fixedSize).checked = this.packOptions.fixedSize;
         ReactDOM.findDOMNode(this.refs.powerOfTwo).checked = this.packOptions.powerOfTwo;
-        ReactDOM.findDOMNode(this.refs.padding).value = Number(this.packOptions.padding) || 0;
-        ReactDOM.findDOMNode(this.refs.extrude).value = Number(this.packOptions.extrude) || 0;
+        ReactDOM.findDOMNode(this.refs.spritePadding).value = Number(this.packOptions.spritePadding) || 0;
+        ReactDOM.findDOMNode(this.refs.borderPadding).value = Number(this.packOptions.borderPadding) || 0;
         ReactDOM.findDOMNode(this.refs.allowRotation).checked = this.packOptions.allowRotation;
         ReactDOM.findDOMNode(this.refs.allowTrim).checked = this.packOptions.allowTrim;
         ReactDOM.findDOMNode(this.refs.trimMode).value = this.packOptions.trimMode;
@@ -369,12 +369,12 @@ class PackProperties extends React.Component {
                             </tr>
                             <tr title={I18.f("PADDING_TITLE")}>
                                 <td>{I18.f("PADDING")}</td>
-                                <td><input ref="padding" type="number" className="border-color-gray" defaultValue={this.packOptions.padding} min="0" onInput={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
+                                <td><input ref="spritePadding" type="number" className="border-color-gray" defaultValue={this.packOptions.spritePadding} min="0" onInput={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
                                 <td></td>
                             </tr>
                             <tr title={I18.f("EXTRUDE_TITLE")}>
                                 <td>{I18.f("EXTRUDE")}</td>
-                                <td><input ref="extrude" type="number" className="border-color-gray" defaultValue={this.packOptions.extrude} min="0" onInput={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
+                                <td><input ref="borderPadding" type="number" className="border-color-gray" defaultValue={this.packOptions.borderPadding} min="0" onInput={this.onPropChanged} onKeyDown={this.forceUpdate}/></td>
                                 <td></td>
                             </tr>
                             <tr title={I18.f("ALLOW_ROTATION_TITLE")}>

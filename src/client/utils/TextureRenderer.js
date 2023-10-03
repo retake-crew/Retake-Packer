@@ -13,8 +13,8 @@ class TextureRenderer {
         let width = options.width || 0;
         let height = options.height || 0;
 
-        let padding = options.padding || 0;
-        let extrude = options.extrude || 0;
+        //let padding = options.padding || 0;
+        let borderPadding = options.borderPadding || 0;
 
         if(!options.fixedSize) {
             width = 0;
@@ -39,8 +39,8 @@ class TextureRenderer {
                 }
             }
 
-            width += padding + extrude;
-            height += padding + extrude;
+            width += borderPadding;
+            height += borderPadding;
         }
 
         if (options.powerOfTwo) {
@@ -91,7 +91,7 @@ class TextureRenderer {
         return tempBuffer;
     }
 
-    renderExtrude(ctx, item, options) {
+    /*renderExtrude(ctx, item, options) {
         if(!options.extrude) return;
 
         let dx = item.frame.x;
@@ -154,38 +154,37 @@ class TextureRenderer {
             dx, dy + item.frame.h,
             item.frame.w, options.extrude);
 
-    }
+    }*/
 
     renderItem(ctx, item, options) {
-        if(!item.skipRender) {
+        if(item.skipRender) return;
 
-            let img = item.image;
+        let img = item.image;
 
-            if (item.rotated) {
-                ctx.save();
-                ctx.translate(item.frame.x + item.frame.h, item.frame.y);
+        if (item.rotated) {
+            ctx.save();
+            ctx.translate(item.frame.x + item.frame.h, item.frame.y);
 
-                ctx.rotate(Math.PI / 2);
+            ctx.rotate(Math.PI / 2);
 
-                this.renderExtrude(ctx, item, options);
+            //this.renderExtrude(ctx, item, options);
 
-                ctx.drawImage(img,
-                              item.spriteSourceSize.x, item.spriteSourceSize.y,
-                              item.spriteSourceSize.w, item.spriteSourceSize.h,
-                              0, 0,
-                              item.frame.w, item.frame.h);
+            ctx.drawImage(img,
+                            item.spriteSourceSize.x, item.spriteSourceSize.y,
+                            item.spriteSourceSize.w, item.spriteSourceSize.h,
+                            0, 0,
+                            item.frame.w, item.frame.h);
 
-                ctx.restore();
-            }
-            else {
-                this.renderExtrude(ctx, item, options);
+            ctx.restore();
+        }
+        else {
+            //this.renderExtrude(ctx, item, options);
 
-                ctx.drawImage(img,
-                              item.spriteSourceSize.x, item.spriteSourceSize.y,
-                              item.spriteSourceSize.w, item.spriteSourceSize.h,
-                              item.frame.x, item.frame.y,
-                              item.frame.w, item.frame.h);
-            }
+            ctx.drawImage(img,
+                            item.spriteSourceSize.x, item.spriteSourceSize.y,
+                            item.spriteSourceSize.w, item.spriteSourceSize.h,
+                            item.frame.x, item.frame.y,
+                            item.frame.w, item.frame.h);
         }
     }
 }

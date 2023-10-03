@@ -13,12 +13,13 @@ const METHOD = {
 };
 
 class MaxRectsPacker extends Packer {
-    constructor(width, height, allowRotate = false) {
+    constructor(width, height, allowRotate = false, padding = 0) {
         super();
 
         this.binWidth = width;
         this.binHeight = height;
         this.allowRotate = allowRotate;
+        this.padding = padding;
     }
 
     pack(data, method) {
@@ -30,7 +31,7 @@ class MaxRectsPacker extends Packer {
             logic: (method === METHOD.Smart || method === METHOD.Square || method === METHOD.SmartSquare) ? PACKING_LOGIC.MAX_EDGE : PACKING_LOGIC.MAX_AREA
         };
 
-        let packer = new MaxRectsPackerEngine(this.binWidth, this.binHeight, 0, options);
+        let packer = new MaxRectsPackerEngine(this.binWidth, this.binHeight, this.padding, options);
 
         let input = [];
 

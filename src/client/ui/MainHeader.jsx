@@ -30,11 +30,23 @@ class MainHeader extends React.Component {
                 <div className="main-header-app-name">
                     <img src="static/images/logo.png" />
                     {appInfo.displayName} {appInfo.version}
+                    <div className='based-on'>Based on Free Texture Packer</div>
                 </div>
 
                 {/* <div className="main-header-about" onClick={this.showAbout}>
                     ?
                 </div> */}
+
+                {/* <div className='main-header-info'>
+                    <div>0x0</div>
+                    <div>0 Bytes</div>
+                </div> */}
+
+                <div className='main-header-github'>
+                    <a href="https://github.com/NeeEoo/funkin-tex-packer">
+                        <img src="static/images/github-mark-white.png" height="25" />
+                    </a>
+                </div>
 
                 <div className="main-header-language border-color-gray">
                     {I18.f("LANGUAGE")}

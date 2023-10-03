@@ -8,7 +8,7 @@ class Packer {
     }
 
     pack() {
-        throw Error("Abstarct method. Override it.");
+        throw Error("Abstract method. Override it.");
     }
 
 

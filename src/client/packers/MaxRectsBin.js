@@ -11,7 +11,7 @@ const METHOD = {
 
 class MaxRectsBin extends Packer {
 
-    constructor(width, height, allowRotate=false) {
+    constructor(width, height, allowRotate=false, padding=0) {
         super();
 
         this.usedRectangles = [];
@@ -20,8 +20,14 @@ class MaxRectsBin extends Packer {
         this.binWidth = width;
         this.binHeight = height;
         this.allowRotate = allowRotate;
+        this.padding = padding;
 
-        this.freeRectangles.push(new Rect(0, 0, width, height));
+        this.freeRectangles.push(new Rect(
+            0,
+            0,
+            width,
+            height
+        ));
     }
 
     pack(data, method) {
@@ -72,7 +78,7 @@ class MaxRectsBin extends Packer {
             for(let i= 0; i < rectangles.length; i++) {
                 let score1 = {value:0};
                 let score2 = {value:0};
-                let newNode = this._scoreRectangle(rectangles[i].frame.w, rectangles[i].frame.h, method, score1, score2);
+                let newNode = this._scoreRectangle(rectangles[i].frame.w + this.padding, rectangles[i].frame.h + this.padding, method, score1, score2);
 
                 if (score1.value < bestScore1 || (score1.value === bestScore1 && score2.value < bestScore2)) {
                     bestScore1 = score1.value;
@@ -90,6 +96,9 @@ class MaxRectsBin extends Packer {
             let rect = rectangles.splice(bestRectangleIndex, 1)[0];
             rect.frame.x = bestNode.x;
             rect.frame.y = bestNode.y;
+
+            bestNode.width -= this.padding;
+            bestNode.height -= this.padding;
 
             if(rect.frame.w !== bestNode.width || rect.frame.h !== bestNode.height) {
                 rect.rotated = true;
@@ -118,6 +127,7 @@ class MaxRectsBin extends Packer {
         let newNode = new Rect();
         score1.value = Infinity;
         score2.value = Infinity;
+
         switch(method) {
             case METHOD.BestShortSideFit:
                 newNode = this._findPositionForNewNodeBestShortSideFit(width, height, score1, score2);
@@ -476,7 +486,7 @@ class MaxRectsBin extends Packer {
             case METHOD.BottomLeftRule:
                 return {name: "Bottom left rule", description: "Does the Tetris placement."};
             case METHOD.ContactPointRule:
-                return {name: "Contact point rule", description: "Choosest the placement where the Rectangle touches other Rectangles as much as possible."};
+                return {name: "Contact point rule", description: "Chooses the placement where the Rectangle touches other Rectangles as much as possible."};
             default:
                 throw Error("Unknown method " + id);
         }
