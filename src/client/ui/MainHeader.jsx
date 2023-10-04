@@ -28,7 +28,7 @@ class MainHeader extends React.Component {
         return (
             <div className="main-header back-900 color-white">
                 <div className="main-header-app-name">
-                    <img src="static/images/logo.png" />
+                    <img src="static/images/logo.png" alt="Logo" />
                     {appInfo.displayName} {appInfo.version}
                     <div className='based-on'>Based on Free Texture Packer</div>
                 </div>
@@ -44,7 +44,7 @@ class MainHeader extends React.Component {
 
                 <div className='main-header-github'>
                     <a href="https://github.com/NeeEoo/funkin-tex-packer">
-                        <img src="static/images/github-mark-white.png" height="25" />
+                        <img src="static/images/github-mark-white.png" height="25" alt="Github" />
                     </a>
                 </div>
 

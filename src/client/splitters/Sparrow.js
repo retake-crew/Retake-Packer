@@ -95,6 +95,14 @@ class Sparrow extends Splitter {
                     item.frameWidth = Math.max(item.frameWidth, item.width + item.frameX);
                     item.frameHeight = Math.max(item.frameHeight, item.height + item.frameY);
 
+                    let rotated = item.rotated === 'true';
+                    if(rotated) {
+                        // Unsure if i should swap the offsets too?
+                        let temp = item.width;
+                        item.width = item.height;
+                        item.height = temp;
+                    }
+
                     res.push({
                         name: name,
                         frame: {
@@ -114,7 +122,7 @@ class Sparrow extends Splitter {
                             h: item.frameHeight
                         },
                         orig: orig,
-                        rotated: item.rotated === 'true',
+                        rotated: rotated,
                         trimmed: trimmed
                     });
 
