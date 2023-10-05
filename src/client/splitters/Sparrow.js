@@ -49,7 +49,7 @@ class Sparrow extends Splitter {
                 }
 
                 window.atlas = atlas;
-                window.sparrowOrigMap = {};
+                //window.sparrowOrigMap = {};
 
                 let list = atlas.TextureAtlas.SubTexture;
 
@@ -61,6 +61,27 @@ class Sparrow extends Splitter {
                     var name = Splitter.fixFileName(item.name);
 
                     if(firstName === null) firstName = name;
+
+                    /*var orig = {};
+                    orig.x = item.x;
+                    orig.y = item.y;
+                    orig.width = item.width;
+                    orig.height = item.height;
+                    orig.frameX = item.frameX;
+                    orig.frameY = item.frameY;
+                    orig.frameWidth = item.frameWidth;
+                    orig.frameHeight = item.frameHeight;
+                    orig.rotated = item.rotated;
+
+                    window.sparrowOrigMap[item.name] = orig;*/
+
+                    let rotated = item.rotated === 'true';
+                    if(rotated) {
+                        // Unsure if i should swap the offsets too?
+                        let temp = item.width;
+                        item.width = item.height;
+                        item.height = temp;
+                    }
 
                     item.x = parseInt(item.x, 10);
                     item.y = parseInt(item.y, 10);
@@ -78,30 +99,10 @@ class Sparrow extends Splitter {
                         item.frameHeight = item.height;
                     }
 
-                    var orig = {};
-                    orig.x = item.x;
-                    orig.y = item.y;
-                    orig.width = item.width;
-                    orig.height = item.height;
-                    orig.frameX = item.frameX;
-                    orig.frameY = item.frameY;
-                    orig.frameWidth = item.frameWidth;
-                    orig.frameHeight = item.frameHeight;
-
-                    window.sparrowOrigMap[item.name] = orig;
-
                     let trimmed = item.width < item.frameWidth || item.height < item.frameHeight;
 
                     item.frameWidth = Math.max(item.frameWidth, item.width + item.frameX);
                     item.frameHeight = Math.max(item.frameHeight, item.height + item.frameY);
-
-                    let rotated = item.rotated === 'true';
-                    if(rotated) {
-                        // Unsure if i should swap the offsets too?
-                        let temp = item.width;
-                        item.width = item.height;
-                        item.height = temp;
-                    }
 
                     res.push({
                         name: name,
@@ -121,7 +122,7 @@ class Sparrow extends Splitter {
                             w: item.frameWidth,
                             h: item.frameHeight
                         },
-                        orig: orig,
+                        //orig: orig,
                         rotated: rotated,
                         trimmed: trimmed
                     });
@@ -143,8 +144,12 @@ class Sparrow extends Splitter {
                         };
                     }
 
+                    if(prefix == "1Title0")
+                        console.log(item.name, item.sourceSize.w, item.sourceSize.h, item);
                     maxSizes[prefix].mw = Math.max(item.sourceSize.w, maxSizes[prefix].mw);
                     maxSizes[prefix].mh = Math.max(item.sourceSize.h, maxSizes[prefix].mh);
+                    //maxSizes[prefix].mw = Math.max(item.orig.width, maxSizes[prefix].mw);
+                    //maxSizes[prefix].mh = Math.max(item.orig.height, maxSizes[prefix].mh);
                 }
 
                 for(let item of res) {
@@ -156,7 +161,7 @@ class Sparrow extends Splitter {
 
                 window.sparrowMaxMap = maxSizes;
 
-                //console.log(maxSizes);
+                console.log(maxSizes);
 
                 window.__sparrow_firstName = firstName;
 
