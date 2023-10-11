@@ -1,30 +1,14 @@
-# Free texture packer
+# Funkin Packer
 
 ![logo](https://raw.githubusercontent.com/odrick/free-tex-packer/master/electron/build/icons/96x96.png)
 
 #
 
-## IMPORTANT: I don't have time to imporove this app anymore. Only critical bugs will be fixed.
-
-#
-
-Free texture packer creates sprite sheets for you game or site. Rotation, trimming, multipacking, various export formats (json, xml, css, pixi.js, godot, phaser, cocos2d). Zip support. TinyPNG support. Split sheet tool.
+Funkin packer creates sprite sheets for you game or site. Rotation, trimming, multipacking, various export formats (json, xml, css, pixi.js, godot, phaser, cocos2d). Zip support. Split sheet tool.
 
 ![screenshot](https://free-tex-packer.com/wp-content/uploads/2019/01/screenshot.png)
 
-Homepage: [https://free-tex-packer.com](https://free-tex-packer.com)
-
-Web version: [https://free-tex-packer.com/app](https://free-tex-packer.com/app)
-
-Desktop versions for win, mac, linux: [https://github.com/odrick/free-tex-packer/releases](https://github.com/odrick/free-tex-packer/releases)
-
-Gulp module: [https://github.com/odrick/gulp-free-tex-packer](https://github.com/odrick/gulp-free-tex-packer)
-
-Grunt plugin: [https://github.com/odrick/grunt-free-tex-packer](https://github.com/odrick/grunt-free-tex-packer)
-
-Webpack plugin: [https://github.com/odrick/webpack-free-tex-packer](https://github.com/odrick/webpack-free-tex-packer)
-
-CLI: [https://github.com/odrick/free-tex-packer-cli](https://github.com/odrick/free-tex-packer-cli)
+Web version: [https://neeeoo.github.io/funkin-packer/](https://neeeoo.github.io/funkin-packer/)
 
 # Custom templates
 Free texture packer uses [mustache](http://mustache.github.io/) template engine.
