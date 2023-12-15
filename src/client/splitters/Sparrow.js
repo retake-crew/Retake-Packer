@@ -53,14 +53,16 @@ class Sparrow extends Splitter {
 
                 let list = atlas.TextureAtlas.SubTexture;
 
-                var firstName = null;
+                //var firstName = null;
+                var order = [];
 
                 for(let item of list) {
                     item = item['$'];
 
                     var name = Splitter.fixFileName(item.name);
 
-                    if(firstName === null) firstName = name;
+                    //if(firstName === null) firstName = name;
+                    order.push(name);
 
                     /*var orig = {};
                     orig.x = item.x;
@@ -144,8 +146,6 @@ class Sparrow extends Splitter {
                         };
                     }
 
-                    if(prefix == "1Title0")
-                        console.log(item.name, item.sourceSize.w, item.sourceSize.h, item);
                     maxSizes[prefix].mw = Math.max(item.sourceSize.w, maxSizes[prefix].mw);
                     maxSizes[prefix].mh = Math.max(item.sourceSize.h, maxSizes[prefix].mh);
                     //maxSizes[prefix].mw = Math.max(item.orig.width, maxSizes[prefix].mw);
@@ -161,9 +161,10 @@ class Sparrow extends Splitter {
 
                 window.sparrowMaxMap = maxSizes;
 
-                console.log(maxSizes);
+                //console.log(maxSizes);
 
-                window.__sparrow_firstName = firstName;
+                //window.__sparrow_firstName = firstName;
+                window.__sparrow_order = order;
 
                 cb(res);
             });

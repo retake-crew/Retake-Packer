@@ -205,7 +205,9 @@ class APP {
                 prependFolderName: this.packOptions.prependFolderName,
                 base64Export: this.packOptions.base64Export,
                 scale: this.packOptions.scale,
-                trimMode: this.packOptions.trimMode
+                trimMode: this.packOptions.trimMode,
+
+                sortExportedRows: this.packOptions.sortExportedRows,
             };
 
             try {

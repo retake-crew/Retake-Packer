@@ -15,8 +15,8 @@ function smartSortImages(f1, f2) {
         if(t1.length > 1) t1.pop();
         if(t2.length > 1) t2.pop();
 
-        n1 = parseInt(t1.join('.'));
-        n2 = parseInt(t2.join('.'));
+        n1 = parseInt(t1.join('.'), 10);
+        n2 = parseInt(t2.join('.'), 10);
 
         if(!isNaN(n1) && !isNaN(n2)) {
             if(n1 === n2) return 0;
@@ -46,9 +46,40 @@ function cleanPrefix(str) {
     return str + lastDigit;
 }
 
+function removeFromArray(arr, item) {
+    let idx = arr.indexOf(item);
+
+    if (idx !== -1) {
+        arr.splice(idx, 1);
+    }
+}
+
+function deepClone(obj) {
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
+
+    if (Array.isArray(obj)) {
+        const newArray = [];
+        for (let i = 0; i < obj.length; i++) {
+            newArray[i] = deepClone(obj[i]);
+        }
+        return newArray;
+    }
+
+    const newObj = {};
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = deepClone(obj[key]);
+        }
+    }
+
+    return newObj;
+}
+
 function clearGlobals() {
     window.atlas = undefined;
-    window.__sparrow_firstName = undefined;
+    window.__sparrow_order = undefined;
     window.sparrowOrigMap = undefined;
     window.sparrowMaxMap = undefined;
 }
@@ -56,5 +87,6 @@ function clearGlobals() {
 module.exports = {
     smartSortImages: smartSortImages,
     cleanPrefix: cleanPrefix,
-    clearGlobals: clearGlobals
+    clearGlobals: clearGlobals,
+    removeFromArray: removeFromArray
 };

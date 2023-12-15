@@ -3,6 +3,7 @@ import appInfo from '../../../package.json';
 import {GET} from '../utils/ajax';
 import mustache from 'mustache';
 import wax from '@jvitela/mustache-wax';
+import { smartSortImages, removeFromArray } from '../utils/common';
 
 wax(mustache);
 
@@ -142,51 +143,69 @@ function startExporter(exporter, data, options) {
             appInfo: appInfo
         };
 
-        var sparrowFirstName = window.__sparrow_firstName;
-
-        if(sparrowFirstName != null) {
-            if(options.removeFileExtension) {
-                let parts = sparrowFirstName.split(".");
-                if(parts.length > 1) parts.pop();
-                sparrowFirstName = parts.join(".");
-            }
-
-            var array = [];
-            for(let rect of rects) {
-                if(rect.name == sparrowFirstName) {
-                    array.push(rect);
-                }
-            }
-            for(let rect of rects) {
-                if(rect.name != sparrowFirstName) {
-                    array.push(rect);
-                }
-            }
-
-            if(window.sparrowOrigMap != null) {
-                for(var i = 0; i < array.length; i++) {
-                    if(!window.sparrowOrigMap.hasOwnProperty(array[i].name)) {
-                        continue;
-                    }
-                    var orig = window.sparrowOrigMap[array[i].name];
-                    if(orig != null) {
-                        // sorry for this horrendus code
-                        array[i] = JSON.parse(JSON.stringify(array[i]));
-
-                        //console.log(orig);
-
-                        array[i].sourceSize.w = orig.frameWidth;
-                        array[i].sourceSize.h = orig.frameHeight;
-                    }
-                }
-            }
-
-            data = array;
-            rects = array;
-            renderOptions.rects = array;
-
-            //console.log(renderOptions, rects, sparrowFirstName, array);
+        // Sort the exported rows
+        if(options.sortExportedRows) {
+            rects = rects.sort((a, b) => {
+                return smartSortImages(a.name, b.name);
+            });
         }
+
+        let sparrowOrder = window.__sparrow_order;
+
+        // Make order the same as before
+        if(sparrowOrder != null) {
+            sparrowOrder = [...sparrowOrder];
+            /* if(options.removeFileExtension) {
+                for(let i = 0; i < sparrowOrder.length; i++) {
+                    let name = sparrowOrder[i];
+                    let parts = name.split(".");
+                    if(parts.length > 1) parts.pop();
+                    sparrowOrder[i] = parts.join(".");
+                }
+            } */
+
+            let oldRects = [...rects];
+            let nameMap = {};
+            for (const v of rects) {
+                nameMap[v.origName] = v;
+            }
+
+            let array = sparrowOrder.filter((v) => {
+                return nameMap[v] !== undefined; // filter for frames which exist
+            }).map(name => {
+                const item = nameMap[name];
+                removeFromArray(oldRects, item);
+                return item;
+            });
+
+            array = array.concat(oldRects);
+
+            rects = array;
+        }
+
+        // Fix sourceSize
+        if(window.sparrowOrigMap != null) {
+            for(var i = 0; i < rects.length; i++) {
+                if(!window.sparrowOrigMap.hasOwnProperty(rects[i].name)) {
+                    continue;
+                }
+                var orig = window.sparrowOrigMap[rects[i].name];
+                if(orig != null) {
+                    // sorry for this horrendus code
+                    rects[i] = JSON.parse(JSON.stringify(rects[i]));
+
+                    //console.log(orig);
+
+                    rects[i].sourceSize.w = orig.frameWidth;
+                    rects[i].sourceSize.h = orig.frameHeight;
+                }
+            }
+        }
+
+        //console.log(rects.map((v)=>v.name));
+
+        data = rects;
+        renderOptions.rects = rects;
 
         if(exporter.content) {
             finishExporter(exporter, renderOptions, resolve, reject);

@@ -1,3 +1,8 @@
+# 0.1.3
+
+- Stores the order of the repacked sparrow sheet, to prevent frame order from changing when exporting
+- Sorted export setting, to sort the exported frames
+
 # 0.1.2
 
 - Fixed bug where repacked rotated frames had its width and height bugged out

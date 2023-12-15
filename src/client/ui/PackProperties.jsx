@@ -94,6 +94,7 @@ class PackProperties extends React.Component {
         data.trimMode = data.trimMode === undefined ? "trim" : data.trimMode;
         data.alphaThreshold = data.alphaThreshold || 0;
         data.detectIdentical = data.detectIdentical === undefined ? true : data.detectIdentical;
+        data.sortExportedRows = data.sortExportedRows === undefined ? true : data.sortExportedRows;
         data.packer = getPackerByType(data.packer) ? data.packer : packers[2].type;
 
         let methodValid = false;
@@ -150,6 +151,7 @@ class PackProperties extends React.Component {
         data.detectIdentical = ReactDOM.findDOMNode(this.refs.detectIdentical).checked;
         data.packer = ReactDOM.findDOMNode(this.refs.packer).value;
         data.packerMethod = ReactDOM.findDOMNode(this.refs.packerMethod).value;
+        data.sortExportedRows = ReactDOM.findDOMNode(this.refs.sortExportedRows).value;
 
         this.packOptions = this.applyOptionsDefaults(data);
     }
@@ -180,6 +182,7 @@ class PackProperties extends React.Component {
         ReactDOM.findDOMNode(this.refs.detectIdentical).checked = this.packOptions.detectIdentical;
         ReactDOM.findDOMNode(this.refs.packer).value = this.packOptions.packer;
         ReactDOM.findDOMNode(this.refs.packerMethod).value = this.packOptions.packerMethod;
+        ReactDOM.findDOMNode(this.refs.sortExportedRows).value = this.packOptions.sortExportedRows;
     }
 
     getPackOptions() {
@@ -255,6 +258,10 @@ class PackProperties extends React.Component {
             ReactDOM.findDOMNode(this.refs.savePath).value = dir;
             this.onExporterPropChanged();
         }
+    }
+
+    clearOrder() {
+        window.__sparrow_order = undefined;
     }
 
     render() {
@@ -413,6 +420,19 @@ class PackProperties extends React.Component {
                                     Advanced
                                 </td>
                             </tr>
+
+                            <tr title={I18.f("CLEAR_STORED_ORDER_TITLE")}>
+                                <td colSpan="3" className="center-align">
+                                    <div className={"btn "+ (window.__sparrow_order == undefined ? "back-400" : "back-800") +" border-color-gray color-white"} onClick={this.clearOrder}>{I18.f("CLEAR_STORED_ORDER")}</div>
+                                </td>
+                            </tr>
+
+                            <tr title={I18.f("SORT_EXPORT_TITLE")}>
+                                <td>{I18.f("SORT_EXPORT")}</td>
+                                <td><input ref="sortExportedRows" type="checkbox" className="border-color-gray" onChange={this.onPropChanged} defaultChecked={this.packOptions.sortExportedRows ? "checked" : ""} /></td>
+                                <td></td>
+                            </tr>
+
                             <tr title={I18.f("FIXED_SIZE_TITLE")}>
                                 <td>{I18.f("FIXED_SIZE")}</td>
                                 <td><input ref="fixedSize" type="checkbox" className="border-color-gray" onChange={this.onPropChanged} defaultChecked={this.packOptions.fixedSize ? "checked" : ""} /></td>
